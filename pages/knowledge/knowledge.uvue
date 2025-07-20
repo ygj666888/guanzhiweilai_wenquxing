@@ -1,0 +1,68 @@
+<template>
+	<view class="knowledge-container">
+		<!-- 顶部标题 -->
+		<view class="header">
+			<text class="page-title">知识库</text>
+		</view>
+
+		<!-- 主要内容 -->
+		<scroll-view class="main-content" scroll-y="true">
+			<view class="content">
+				<text class="welcome-text">知识库页面</text>
+			</view>
+		</scroll-view>
+	</view>
+</template>
+
+<script>
+export default {
+	data() {
+		return {
+			
+		}
+	},
+	methods: {
+		
+	}
+}
+</script>
+
+<style>
+.knowledge-container {
+	flex: 1;
+	background-color: #ffffff;
+}
+
+/* 顶部标题 */
+.header {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding: 30rpx;
+	border-bottom: 1rpx solid #e0e0e0;
+}
+
+.page-title {
+	font-size: 36rpx;
+	font-weight: 600;
+	color: #000000;
+}
+
+/* 主要内容 */
+.main-content {
+	flex: 1;
+	padding: 30rpx;
+}
+
+.content {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 400rpx;
+}
+
+.welcome-text {
+	font-size: 32rpx;
+	color: #666666;
+}
+</style> 

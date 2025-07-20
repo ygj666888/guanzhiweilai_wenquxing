@@ -1,0 +1,636 @@
+<template>
+	<view class="profile-container">
+		<!-- 顶部标题 -->
+		<view class="header">
+			<text class="app-title">我的</text>
+		</view>
+
+		<!-- 主要内容 -->
+		<scroll-view class="main-content" scroll-y="true">
+			<!-- 未登录状态 -->
+			<view v-if="!isLoggedIn" class="login-section">
+				<text class="login-title">冠智未来</text>
+				<button class="login-btn" @click="wechatLogin">登录体验完整功能</button>
+			</view>
+
+			<!-- 已登录状态 -->
+			<view v-else class="user-section">
+				<!-- 用户信息 -->
+				<view class="user-info">
+					<view class="avatar" v-if="!userInfo.avatar">
+						<text class="avatar-text">{{userInfo.nickname.charAt(0)}}</text>
+					</view>
+					<image class="avatar-image" v-else :src="userInfo.avatar" mode="aspectFill" />
+					<view class="user-details">
+						<text class="user-name">{{userInfo.nickname}}</text>
+						<text class="user-id">用户ID: {{userInfo.userId}}</text>
+						<text class="phone-status" v-if="userInfo.phoneBound" :class="{ bound: userInfo.phoneBound }">
+							📱 手机已绑定
+						</text>
+						<text class="phone-status" v-else>
+							📱 手机未绑定
+						</text>
+					</view>
+					<text class="edit-link" @click="goToEditProfile">编辑资料</text>
+				</view>
+
+				<!-- 会员和硬币信息 -->
+				<view class="member-section">
+					<view class="member-info">
+						<text class="member-type">{{userInfo.isVip ? 'VIP会员' : '普通用户'}}</text>
+						<text class="member-promo" v-if="!userInfo.isVip">升级会员限时送硬币</text>
+					</view>
+					<button class="upgrade-btn" v-if="!userInfo.isVip" @click="goToUpgradeMember">升级会员</button>
+				</view>
+
+				<!-- 数据统计 -->
+				<view class="stats-section">
+					<view class="stat-item">
+						<text class="stat-number">{{userInfo.coins}}</text>
+						<text class="stat-label">创作硬币</text>
+						<button class="recharge-btn" @click="goToRecharge">充值</button>
+					</view>
+					<view class="stat-item">
+						<text class="stat-number">{{userInfo.rechargeOrders}}</text>
+						<text class="stat-label">充值订单</text>
+					</view>
+					<view class="stat-item">
+						<text class="stat-number">{{userInfo.questionRecords}}</text>
+						<text class="stat-label">提问记录</text>
+					</view>
+					<view class="stat-item">
+						<text class="stat-number">{{userInfo.creationRecords}}</text>
+						<text class="stat-label">创作记录</text>
+					</view>
+				</view>
+			</view>
+
+			<!-- 功能菜单 -->
+			<view class="menu-section">
+				<view class="menu-item" @click="inviteFriends" v-if="isLoggedIn">
+					<text class="menu-text">邀请好友</text>
+					<text class="menu-desc">成功邀请新用户注册，可获得1万硬币</text>
+					<text class="menu-arrow"></text>
+				</view>
+				
+				<view class="menu-item" @click="goToShareEarn" v-if="isLoggedIn">
+					<text class="menu-text">分享赚硬币</text>
+					<text class="menu-arrow"></text>
+				</view>
+				
+				<view class="menu-item" @click="goToDesktop">
+					<text class="menu-text">电脑版</text>
+					<view class="menu-right">
+						<text class="menu-url">https://www.wsxai.com/</text>
+					</view>
+				</view>
+				
+				<view class="menu-item" @click="goToUsageGuide">
+					<text class="menu-text">使用说明</text>
+				</view>
+				
+				<view class="menu-item" @click="contactService">
+					<text class="menu-text">联系客服</text>
+				</view>
+				
+				<view class="menu-item" @click="goToAccountSecurity" v-if="isLoggedIn">
+					<text class="menu-text">账号及安全</text>
+				</view>
+				
+				<view class="menu-item" @click="goToAboutUs">
+					<text class="menu-text">关于我们</text>
+				</view>
+				
+				<view class="menu-item" @click="goToFeedback">
+					<text class="menu-text">意见反馈</text>
+				</view>
+			</view>
+
+			<!-- 退出登录 -->
+			<view class="logout-section" v-if="isLoggedIn">
+				<button class="logout-btn" @click="logout">退出登录</button>
+			</view>
+
+			<!-- 底部信息 -->
+			<view class="footer-section">
+				<text class="copyright">@ 2024 guanzhi.com.cn ©冠智未来科技有限公司</text>
+				<text class="icp">沪ICP备2024000000号-1 | 沪公网安备: 31010402000000号</text>
+			</view>
+		</scroll-view>
+	</view>
+</template>
+
+<script>
+export default {
+	data() {
+		return {
+			isLoggedIn: false,
+			userInfo: {
+				nickname: 'inner2466',
+				userId: '1933438229252542466',
+				isVip: false,
+				coins: 5000,
+				rechargeOrders: 0,
+				questionRecords: 0,
+				creationRecords: 0
+			}
+		}
+	},
+	onLoad() {
+		this.loadUserData()
+	},
+	
+	onShow() {
+		// 每次显示页面时重新加载数据，确保显示最新信息
+		this.loadUserData()
+	},
+	
+	loadUserData() {
+		// 从本地存储加载用户信息
+		const savedUserInfo = uni.getStorageSync('userInfo')
+		if (savedUserInfo) {
+			this.userInfo = { ...this.userInfo, ...savedUserInfo }
+		}
+		
+		// 从本地存储加载头像
+		const savedAvatar = uni.getStorageSync('userAvatar')
+		if (savedAvatar) {
+			this.userInfo.avatar = savedAvatar
+		}
+		
+		// 检查手机绑定状态
+		const phoneBound = uni.getStorageSync('phoneBound')
+		if (phoneBound) {
+			this.userInfo.phoneBound = true
+			// 确保用户信息中也包含手机绑定状态
+			if (!this.userInfo.phoneBound) {
+				this.userInfo.phoneBound = true
+				uni.setStorageSync('userInfo', this.userInfo)
+			}
+		}
+	},
+	methods: {
+		// 微信登录
+		wechatLogin() {
+			uni.showLoading({
+				title: '登录中...'
+			})
+			
+			// 模拟微信登录
+			setTimeout(() => {
+				uni.hideLoading()
+				this.isLoggedIn = true
+				uni.showToast({
+					title: '登录成功',
+					icon: 'success'
+				})
+			}, 2000)
+		},
+		
+		// 退出登录
+		logout() {
+			uni.showModal({
+				title: '确认退出',
+				content: '确定要退出登录吗？',
+				success: (res) => {
+					if (res.confirm) {
+						this.isLoggedIn = false
+						uni.showToast({
+							title: '已退出登录',
+							icon: 'success'
+						})
+					}
+				}
+			})
+		},
+		
+		// 页面跳转方法
+		goToEditProfile() {
+			uni.navigateTo({
+				url: '/pages/profile/edit-profile/edit-profile'
+			})
+		},
+		
+		goToUpgradeMember() {
+			uni.navigateTo({
+				url: '/pages/profile/upgrade-member/upgrade-member'
+			})
+		},
+		
+		goToRecharge() {
+			uni.navigateTo({
+				url: '/pages/profile/recharge/recharge'
+			})
+		},
+		
+		inviteFriends() {
+			uni.showActionSheet({
+				itemList: ['分享给微信好友', '复制邀请链接'],
+				success: (res) => {
+					if (res.tapIndex === 0) {
+						// 分享给微信好友
+						uni.share({
+							provider: 'weixin',
+							scene: 'WXSceneSession',
+							type: 0,
+							href: 'https://www.wsxai.com/invite?code=inner2466',
+							title: '冠智未来文曲星小程序',
+							summary: '邀请您使用冠智未来文曲星小程序，成功注册可获得1万硬币奖励！',
+							imageUrl: '/static/logo.png',
+							success: () => {
+								uni.showToast({
+									title: '分享成功',
+									icon: 'success'
+								})
+							},
+							fail: () => {
+								uni.showToast({
+									title: '分享失败',
+									icon: 'none'
+								})
+							}
+						})
+					} else if (res.tapIndex === 1) {
+						// 复制邀请链接
+						const inviteLink = 'https://www.wsxai.com/invite?code=inner2466'
+						uni.setClipboardData({
+							data: inviteLink,
+							success: () => {
+								uni.showToast({
+									title: '邀请链接已复制',
+									icon: 'success'
+								})
+							}
+						})
+					}
+				}
+			})
+		},
+		
+		goToShareEarn() {
+			uni.navigateTo({
+				url: '/pages/profile/share-earn/share-earn'
+			})
+		},
+		
+		goToDesktop() {
+			uni.navigateTo({
+				url: '/pages/webview/webview?url=' + encodeURIComponent('https://www.wsxai.com/')
+			})
+		},
+		
+		goToUsageGuide() {
+			uni.navigateTo({
+				url: '/pages/profile/usage-guide/usage-guide'
+			})
+		},
+		
+		contactService() {
+			// 打开企业微信客服
+			uni.openCustomerServiceChat({
+				extInfo: {
+					url: 'https://work.weixin.qq.com/kfid/kfc123456'
+				},
+				corpId: 'ww1234567890abcdef', // 企业微信企业ID
+				agentId: '1000001', // 客服应用ID
+				success: () => {
+					uni.showToast({
+						title: '正在打开客服',
+						icon: 'none'
+					})
+				},
+				fail: (err) => {
+					console.log('打开客服失败:', err)
+					// 如果打开失败，提供备选方案
+					uni.showActionSheet({
+						itemList: ['复制客服微信号', '拨打客服电话'],
+						success: (res) => {
+							if (res.tapIndex === 0) {
+								// 复制客服微信号
+								uni.setClipboardData({
+									data: 'guanzhi-kefu',
+									success: () => {
+										uni.showToast({
+											title: '客服微信号已复制',
+											icon: 'success'
+										})
+									}
+								})
+							} else if (res.tapIndex === 1) {
+								// 拨打客服电话
+								uni.makePhoneCall({
+									phoneNumber: '400-123-4567',
+									success: () => {
+										uni.showToast({
+											title: '正在拨打客服电话',
+											icon: 'none'
+										})
+									}
+								})
+							}
+						}
+					})
+				}
+			})
+		},
+		
+		goToAccountSecurity() {
+			uni.navigateTo({
+				url: '/pages/profile/account-security/account-security'
+			})
+		},
+		
+		goToAboutUs() {
+			uni.navigateTo({
+				url: '/pages/profile/about-us/about-us'
+			})
+		},
+		
+		goToFeedback() {
+			uni.navigateTo({
+				url: '/pages/profile/feedback/feedback'
+			})
+		}
+	}
+}
+</script>
+
+<style>
+.profile-container {
+	flex: 1;
+	background-color: #ffffff;
+}
+
+/* 顶部标题 */
+.header {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding: 30rpx;
+	border-bottom: 1rpx solid #e0e0e0;
+}
+
+.app-title {
+	font-size: 36rpx;
+	font-weight: 600;
+	color: #000000;
+}
+
+/* 主要内容 */
+.main-content {
+	flex: 1;
+	padding: 30rpx;
+}
+
+/* 登录区域 */
+.login-section {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	margin-bottom: 60rpx;
+}
+
+.login-title {
+	font-size: 48rpx;
+	font-weight: 600;
+	color: #000000;
+	margin-bottom: 40rpx;
+}
+
+.login-btn {
+	width: 100%;
+	height: 100rpx;
+	background: linear-gradient(90deg, #007aff 0%, #00c851 100%);
+	color: #ffffff;
+	border: none;
+	border-radius: 16rpx;
+	font-size: 32rpx;
+	font-weight: 500;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+/* 用户信息区域 */
+.user-section {
+	margin-bottom: 40rpx;
+}
+
+.user-info {
+	display: flex;
+	align-items: center;
+	padding: 30rpx 0;
+	border-bottom: 1rpx solid #f0f0f0;
+}
+
+.avatar {
+	width: 100rpx;
+	height: 100rpx;
+	background-color: #007aff;
+	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin-right: 25rpx;
+}
+
+.avatar-text {
+	font-size: 36rpx;
+	font-weight: 600;
+	color: #ffffff;
+}
+
+.avatar-image {
+	width: 100rpx;
+	height: 100rpx;
+	border-radius: 50%;
+}
+
+.user-details {
+	flex: 1;
+}
+
+.user-name {
+	font-size: 32rpx;
+	font-weight: 600;
+	color: #000000;
+	display: block;
+	margin-bottom: 8rpx;
+}
+
+.user-id {
+	font-size: 24rpx;
+	color: #666666;
+	display: block;
+}
+
+.phone-status {
+	font-size: 22rpx;
+	color: #ff3b30;
+	display: block;
+	margin-top: 8rpx;
+}
+
+.phone-status.bound {
+	color: #00c851;
+}
+
+.edit-link {
+	font-size: 26rpx;
+	color: #007aff;
+}
+
+/* 会员信息 */
+.member-section {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 25rpx 0;
+	border-bottom: 1rpx solid #f0f0f0;
+}
+
+.member-info {
+	display: flex;
+	flex-direction: column;
+}
+
+.member-type {
+	font-size: 28rpx;
+	color: #000000;
+	margin-bottom: 8rpx;
+}
+
+.member-promo {
+	font-size: 24rpx;
+	color: #ff3b30;
+}
+
+.upgrade-btn {
+	background: linear-gradient(90deg, #007aff 0%, #00c851 100%);
+	color: #ffffff;
+	border: none;
+	border-radius: 8rpx;
+	padding: 12rpx 24rpx;
+	font-size: 26rpx;
+}
+
+/* 数据统计 */
+.stats-section {
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr 1fr;
+	gap: 20rpx;
+	padding: 25rpx 0;
+}
+
+.stat-item {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	text-align: center;
+}
+
+.stat-number {
+	font-size: 32rpx;
+	font-weight: 600;
+	color: #000000;
+	margin-bottom: 8rpx;
+}
+
+.stat-label {
+	font-size: 22rpx;
+	color: #666666;
+	margin-bottom: 8rpx;
+}
+
+.recharge-btn {
+	background-color: #007aff;
+	color: #ffffff;
+	border: none;
+	border-radius: 6rpx;
+	padding: 6rpx 12rpx;
+	font-size: 20rpx;
+}
+
+/* 功能菜单 */
+.menu-section {
+	background-color: #ffffff;
+	border-radius: 16rpx;
+	overflow: hidden;
+	margin-bottom: 40rpx;
+}
+
+.menu-item {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 30rpx;
+	border-bottom: 1rpx solid #f0f0f0;
+	position: relative;
+}
+
+.menu-item:last-child {
+	border-bottom: none;
+}
+
+.menu-text {
+	font-size: 30rpx;
+	color: #000000;
+}
+
+.menu-desc {
+	position: absolute;
+	left: 30rpx;
+	top: 70rpx;
+	font-size: 22rpx;
+	color: #666666;
+}
+
+.menu-right {
+	display: flex;
+	align-items: center;
+	gap: 15rpx;
+}
+
+.menu-url {
+	font-size: 24rpx;
+	color: #666666;
+}
+
+
+
+/* 退出登录 */
+.logout-section {
+	margin-bottom: 40rpx;
+}
+
+.logout-btn {
+	width: 100%;
+	background-color: #ffffff;
+	color: #ff3b30;
+	border: 1rpx solid #ff3b30;
+	border-radius: 12rpx;
+	padding: 25rpx;
+	font-size: 30rpx;
+}
+
+/* 底部信息 */
+.footer-section {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 10rpx;
+	padding: 40rpx 0;
+}
+
+.copyright {
+	font-size: 24rpx;
+	color: #999999;
+	text-align: center;
+}
+
+.icp {
+	font-size: 22rpx;
+	color: #999999;
+	text-align: center;
+}
+</style> 

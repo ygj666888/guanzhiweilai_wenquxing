@@ -1,0 +1,221 @@
+<template>
+	<view class="account-security-container">
+		<view class="security-list">
+			<view class="security-item" @click="changePassword">
+				<view class="item-left">
+					<view class="item-icon">🔒</view>
+					<view class="item-content">
+						<text class="item-title">修改密码</text>
+						<text class="item-desc">定期更换密码保护账号安全</text>
+					</view>
+				</view>
+				<text class="item-arrow">></text>
+			</view>
+			
+			<view class="security-item" @click="bindPhone">
+				<view class="item-left">
+					<view class="item-icon">📱</view>
+					<view class="item-content">
+						<text class="item-title">绑定手机</text>
+						<text class="item-desc">{{phoneStatus}}</text>
+					</view>
+				</view>
+				<text class="item-arrow">></text>
+			</view>
+			
+			<view class="security-item" @click="bindEmail">
+				<view class="item-left">
+					<view class="item-icon">📧</view>
+					<view class="item-content">
+						<text class="item-title">绑定邮箱</text>
+						<text class="item-desc">{{emailStatus}}</text>
+					</view>
+				</view>
+				<text class="item-arrow">></text>
+			</view>
+			
+			<view class="security-item" @click="loginHistory">
+				<view class="item-left">
+					<view class="item-icon">📊</view>
+					<view class="item-content">
+						<text class="item-title">登录记录</text>
+						<text class="item-desc">查看账号登录历史</text>
+					</view>
+				</view>
+				<text class="item-arrow">></text>
+			</view>
+			
+			<view class="security-item" @click="deviceManagement">
+				<view class="item-left">
+					<view class="item-icon">💻</view>
+					<view class="item-content">
+						<text class="item-title">设备管理</text>
+						<text class="item-desc">管理已登录设备</text>
+					</view>
+				</view>
+				<text class="item-arrow">></text>
+			</view>
+			
+			<view class="security-item" @click="privacySettings">
+				<view class="item-left">
+					<view class="item-icon">🔐</view>
+					<view class="item-content">
+						<text class="item-title">隐私设置</text>
+						<text class="item-desc">管理个人信息隐私</text>
+					</view>
+				</view>
+				<text class="item-arrow">></text>
+			</view>
+		</view>
+		
+		<!-- 安全提示 -->
+		<view class="security-tips">
+			<text class="tips-title">安全提示</text>
+			<view class="tips-list">
+				<text class="tip-item">• 定期更换密码，使用强密码</text>
+				<text class="tip-item">• 不要将账号密码告诉他人</text>
+				<text class="tip-item">• 及时绑定手机和邮箱</text>
+				<text class="tip-item">• 定期检查登录记录</text>
+				<text class="tip-item">• 发现异常及时联系客服</text>
+			</view>
+		</view>
+	</view>
+</template>
+
+<script>
+export default {
+	data() {
+		return {
+			phoneStatus: '未绑定',
+			emailStatus: '未绑定'
+		}
+	},
+	methods: {
+		changePassword() {
+			uni.showToast({
+				title: '修改密码功能开发中',
+				icon: 'none'
+			})
+		},
+		
+		bindPhone() {
+			uni.showToast({
+				title: '绑定手机功能开发中',
+				icon: 'none'
+			})
+		},
+		
+		bindEmail() {
+			uni.showToast({
+				title: '绑定邮箱功能开发中',
+				icon: 'none'
+			})
+		},
+		
+		loginHistory() {
+			uni.showToast({
+				title: '登录记录功能开发中',
+				icon: 'none'
+			})
+		},
+		
+		deviceManagement() {
+			uni.showToast({
+				title: '设备管理功能开发中',
+				icon: 'none'
+			})
+		},
+		
+		privacySettings() {
+			uni.showToast({
+				title: '隐私设置功能开发中',
+				icon: 'none'
+			})
+		}
+	}
+}
+</script>
+
+<style>
+.account-security-container {
+	flex: 1;
+	background-color: #f8f8f8;
+	padding: 30rpx;
+}
+
+.security-list {
+	background-color: #ffffff;
+	border-radius: 16rpx;
+	overflow: hidden;
+	margin-bottom: 30rpx;
+}
+
+.security-item {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 30rpx;
+	border-bottom: 1rpx solid #f0f0f0;
+}
+
+.security-item:last-child {
+	border-bottom: none;
+}
+
+.item-left {
+	display: flex;
+	align-items: center;
+	gap: 20rpx;
+}
+
+.item-icon {
+	font-size: 40rpx;
+}
+
+.item-content {
+	display: flex;
+	flex-direction: column;
+	gap: 8rpx;
+}
+
+.item-title {
+	font-size: 28rpx;
+	color: #000000;
+}
+
+.item-desc {
+	font-size: 24rpx;
+	color: #666666;
+}
+
+.item-arrow {
+	font-size: 28rpx;
+	color: #999999;
+}
+
+.security-tips {
+	background-color: #ffffff;
+	border-radius: 16rpx;
+	padding: 40rpx;
+}
+
+.tips-title {
+	font-size: 28rpx;
+	font-weight: 600;
+	color: #000000;
+	margin-bottom: 20rpx;
+	display: block;
+}
+
+.tips-list {
+	display: flex;
+	flex-direction: column;
+	gap: 15rpx;
+}
+
+.tip-item {
+	font-size: 26rpx;
+	color: #666666;
+	line-height: 1.5;
+}
+</style> 

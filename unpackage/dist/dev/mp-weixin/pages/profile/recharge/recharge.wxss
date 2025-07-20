@@ -1,0 +1,243 @@
+:host{display:flex;flex-direction:column}
+
+.recharge-container {
+	flex: 1;
+	background-color: #f8f8f8;
+	padding: 30rpx;
+}
+.balance-section {
+	background-color: #ffffff;
+	border-radius: 16rpx;
+	padding: 40rpx;
+	margin-bottom: 30rpx;
+	text-align: center;
+}
+.balance-title {
+	font-size: 28rpx;
+	color: #666666;
+	margin-bottom: 20rpx;
+	display: block;
+}
+.balance-amount {
+	display: flex;
+	align-items: baseline;
+	justify-content: center;
+	gap: 10rpx;
+}
+.amount-number {
+	font-size: 48rpx;
+	font-weight: 600;
+	color: #007aff;
+}
+.amount-unit {
+	font-size: 28rpx;
+	color: #666666;
+}
+.packages-section {
+	background-color: #ffffff;
+	border-radius: 16rpx;
+	padding: 40rpx;
+	margin-bottom: 30rpx;
+}
+.section-title {
+	font-size: 32rpx;
+	font-weight: 600;
+	color: #000000;
+	margin-bottom: 30rpx;
+	display: block;
+}
+.packages-grid {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 20rpx;
+}
+.package-item {
+	border: 2rpx solid #e0e0e0;
+	border-radius: 12rpx;
+	padding: 30rpx;
+	text-align: center;
+	position: relative;
+	transition: all 0.3s;
+}
+.package-item.active {
+	border-color: #007aff;
+	background-color: #f0f8ff;
+}
+.package-amount {
+	margin-bottom: 15rpx;
+}
+.amount {
+	font-size: 36rpx;
+	font-weight: 600;
+	color: #000000;
+}
+.unit {
+	font-size: 24rpx;
+	color: #666666;
+}
+.package-price {
+	display: flex;
+	align-items: baseline;
+	justify-content: center;
+	gap: 5rpx;
+	margin-bottom: 10rpx;
+}
+.price-symbol {
+	font-size: 24rpx;
+	color: #ff3b30;
+}
+.price-number {
+	font-size: 32rpx;
+	font-weight: 600;
+	color: #ff3b30;
+}
+.package-bonus {
+	margin-bottom: 10rpx;
+}
+.bonus-text {
+	font-size: 22rpx;
+	color: #00c851;
+	background-color: #f0fff0;
+	padding: 4rpx 8rpx;
+	border-radius: 4rpx;
+}
+.package-tag {
+	position: absolute;
+	top: -10rpx;
+	right: -10rpx;
+	background-color: #ff3b30;
+	color: #ffffff;
+	padding: 6rpx 12rpx;
+	border-radius: 6rpx;
+	font-size: 20rpx;
+}
+.custom-section {
+	background-color: #ffffff;
+	border-radius: 16rpx;
+	padding: 40rpx;
+	margin-bottom: 30rpx;
+}
+.custom-input {
+	display: flex;
+	flex-direction: column;
+	gap: 10rpx;
+}
+.amount-input {
+	width: 100%;
+	height: 80rpx;
+	border: 1rpx solid #e0e0e0;
+	border-radius: 8rpx;
+	padding: 0 20rpx;
+	font-size: 28rpx;
+	background-color: #ffffff;
+}
+.input-tip {
+	font-size: 24rpx;
+	color: #999999;
+}
+.payment-section {
+	background-color: #ffffff;
+	border-radius: 16rpx;
+	padding: 40rpx;
+	margin-bottom: 30rpx;
+}
+.payment-list {
+	display: flex;
+	flex-direction: column;
+	gap: 20rpx;
+}
+.payment-item {
+	display: flex;
+	align-items: center;
+	padding: 30rpx;
+	border: 2rpx solid #e0e0e0;
+	border-radius: 12rpx;
+	position: relative;
+}
+.payment-item.active {
+	border-color: #007aff;
+	background-color: #f0f8ff;
+}
+.payment-icon {
+	font-size: 40rpx;
+	margin-right: 20rpx;
+}
+.payment-name {
+	font-size: 28rpx;
+	color: #000000;
+	flex: 1;
+}
+.payment-check {
+	width: 40rpx;
+	height: 40rpx;
+	background-color: #007aff;
+	color: #ffffff;
+	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 24rpx;
+	font-weight: 600;
+}
+.notice-section {
+	background-color: #ffffff;
+	border-radius: 16rpx;
+	padding: 40rpx;
+	margin-bottom: 30rpx;
+}
+.notice-title {
+	font-size: 28rpx;
+	font-weight: 600;
+	color: #000000;
+	margin-bottom: 20rpx;
+	display: block;
+}
+.notice-list {
+	display: flex;
+	flex-direction: column;
+	gap: 10rpx;
+}
+.notice-item {
+	font-size: 24rpx;
+	color: #666666;
+}
+.bottom-section {
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	background-color: #ffffff;
+	padding: 30rpx;
+	border-top: 1rpx solid #e0e0e0;
+	display: flex;
+	flex-direction: column;
+	gap: 15rpx;
+}
+.payment-summary, .coins-summary {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+.summary-text {
+	font-size: 28rpx;
+	color: #000000;
+}
+.summary-price {
+	font-size: 32rpx;
+	font-weight: 600;
+	color: #ff3b30;
+}
+.summary-coins {
+	font-size: 32rpx;
+	font-weight: 600;
+	color: #007aff;
+}
+.pay-btn {
+	background: linear-gradient(90deg, #007aff 0%, #00c851 100%);
+	color: #ffffff;
+	border: none;
+	border-radius: 12rpx;
+	padding: 25rpx;
+	font-size: 30rpx;
+	font-weight: 500;
+}

@@ -1,0 +1,151 @@
+:host{display:flex;flex-direction:column}
+
+.edit-profile-container {
+	flex: 1;
+	background-color: #f8f8f8;
+	padding: 30rpx;
+}
+.form-section {
+	background-color: #ffffff;
+	border-radius: 16rpx;
+	padding: 30rpx;
+	margin-bottom: 40rpx;
+}
+.form-item {
+	margin-bottom: 40rpx;
+}
+.form-item:last-child {
+	margin-bottom: 0;
+}
+.form-label {
+	font-size: 28rpx;
+	color: #000000;
+	margin-bottom: 20rpx;
+	display: block;
+}
+.form-input {
+	width: 100%;
+	height: 80rpx;
+	border: 1rpx solid #e0e0e0;
+	border-radius: 8rpx;
+	padding: 0 20rpx;
+	font-size: 28rpx;
+	background-color: #ffffff;
+}
+.avatar-section {
+	display: flex;
+	align-items: center;
+	gap: 30rpx;
+}
+.avatar {
+	width: 120rpx;
+	height: 120rpx;
+	background-color: #007aff;
+	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.avatar-text {
+	font-size: 48rpx;
+	font-weight: 600;
+	color: #ffffff;
+}
+.avatar-tip {
+	font-size: 26rpx;
+	color: #666666;
+}
+.avatar-image {
+	width: 120rpx;
+	height: 120rpx;
+	border-radius: 50%;
+}
+.userid-section {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 20rpx;
+	border: 1rpx solid #e0e0e0;
+	border-radius: 8rpx;
+	background-color: #f8f8f8;
+}
+.userid-text {
+	font-size: 28rpx;
+	color: #666666;
+}
+.copy-btn {
+	width: 60rpx;
+	height: 60rpx;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.copy-icon {
+	font-size: 32rpx;
+}
+.phone-section {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 20rpx;
+	border: 1rpx solid #e0e0e0;
+	border-radius: 8rpx;
+	background-color: #ffffff;
+}
+.phone-status {
+	font-size: 28rpx;
+	color: #ff3b30;
+}
+.phone-status.bound {
+	color: #00c851;
+}
+.phone-arrow {
+	font-size: 28rpx;
+	color: #999999;
+}
+.form-picker {
+	width: 100%;
+	height: 80rpx;
+	border: 1rpx solid #e0e0e0;
+	border-radius: 8rpx;
+	padding: 0 20rpx;
+	background-color: #ffffff;
+	display: flex;
+	align-items: center;
+}
+.picker-text {
+	font-size: 28rpx;
+	color: #000000;
+}
+.form-textarea {
+	width: 100%;
+	height: 200rpx;
+	border: 1rpx solid #e0e0e0;
+	border-radius: 8rpx;
+	padding: 20rpx;
+	font-size: 28rpx;
+	background-color: #ffffff;
+}
+.char-count {
+	font-size: 24rpx;
+	color: #999999;
+	text-align: right;
+	margin-top: 10rpx;
+	display: block;
+}
+.button-section {
+	padding: 30rpx 0;
+}
+.save-btn {
+	width: 100%;
+	height: 100rpx;
+	background: linear-gradient(90deg, #007aff 0%, #00c851 100%);
+	color: #ffffff;
+	border: none;
+	border-radius: 16rpx;
+	font-size: 32rpx;
+	font-weight: 500;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}

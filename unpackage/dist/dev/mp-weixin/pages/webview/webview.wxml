@@ -1,0 +1,1 @@
+<view id="{{b}}" change:eS="{{uV.sS}}" eS="{{$eS[b]}}" change:eA="{{uV.sA}}" eA="{{$eA[b]}}" class="{{['webview-container', virtualHostClass]}}" style="{{virtualHostStyle}}" hidden="{{virtualHostHidden || false}}"><web-view src="{{a}}"></web-view></view><wxs src="/common/uniView.wxs" module="uV"/>

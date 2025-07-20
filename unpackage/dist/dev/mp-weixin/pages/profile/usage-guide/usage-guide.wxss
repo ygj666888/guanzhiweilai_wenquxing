@@ -1,0 +1,155 @@
+:host{display:flex;flex-direction:column}
+
+.usage-guide-container {
+	flex: 1;
+	background-color: #f8f8f8;
+}
+.guide-content {
+	flex: 1;
+	padding: 30rpx;
+}
+.guide-section {
+	background-color: #ffffff;
+	border-radius: 16rpx;
+	padding: 40rpx;
+	margin-bottom: 30rpx;
+}
+.section-title {
+	font-size: 32rpx;
+	font-weight: 600;
+	color: #000000;
+	margin-bottom: 30rpx;
+	display: block;
+}
+.step-list {
+	display: flex;
+	flex-direction: column;
+	gap: 25rpx;
+}
+.step-item {
+	display: flex;
+	align-items: flex-start;
+	gap: 20rpx;
+}
+.step-number {
+	width: 50rpx;
+	height: 50rpx;
+	background-color: #007aff;
+	color: #ffffff;
+	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 24rpx;
+	font-weight: 600;
+	flex-shrink: 0;
+}
+.step-content {
+	flex: 1;
+}
+.step-title {
+	font-size: 28rpx;
+	font-weight: 600;
+	color: #000000;
+	display: block;
+	margin-bottom: 8rpx;
+}
+.step-desc {
+	font-size: 26rpx;
+	color: #666666;
+	line-height: 1.5;
+}
+.feature-list {
+	display: flex;
+	flex-direction: column;
+	gap: 25rpx;
+}
+.feature-item {
+	display: flex;
+	align-items: flex-start;
+	gap: 20rpx;
+}
+.feature-icon {
+	font-size: 50rpx;
+	flex-shrink: 0;
+}
+.feature-content {
+	flex: 1;
+}
+.feature-title {
+	font-size: 28rpx;
+	font-weight: 600;
+	color: #000000;
+	display: block;
+	margin-bottom: 8rpx;
+}
+.feature-desc {
+	font-size: 26rpx;
+	color: #666666;
+	line-height: 1.5;
+}
+.faq-list {
+	display: flex;
+	flex-direction: column;
+	gap: 20rpx;
+}
+.faq-item {
+	border: 1rpx solid #e0e0e0;
+	border-radius: 8rpx;
+	overflow: hidden;
+}
+.faq-question {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 25rpx;
+	background-color: #f8f8f8;
+}
+.question-text {
+	font-size: 28rpx;
+	color: #000000;
+	flex: 1;
+}
+.question-arrow {
+	font-size: 24rpx;
+	color: #666666;
+	transition: transform 0.3s;
+}
+.question-arrow.expanded {
+	transform: rotate(180deg);
+}
+.faq-answer {
+	padding: 25rpx;
+	background-color: #ffffff;
+}
+.answer-text {
+	font-size: 26rpx;
+	color: #666666;
+	line-height: 1.5;
+}
+.support-list {
+	display: flex;
+	gap: 30rpx;
+}
+.support-item {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 15rpx;
+	padding: 30rpx;
+	border: 2rpx solid #e0e0e0;
+	border-radius: 12rpx;
+	transition: all 0.3s;
+}
+.support-item:active {
+	background-color: #f0f8ff;
+	border-color: #007aff;
+}
+.support-icon {
+	font-size: 50rpx;
+}
+.support-text {
+	font-size: 28rpx;
+	color: #000000;
+}

@@ -1,0 +1,250 @@
+@import "../../uvue.wxss";
+:host{display:flex;flex-direction:column}
+
+.profile-container {
+	flex: 1;
+	background-color: #ffffff;
+}
+
+/* 顶部标题 */
+.header {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding: 30rpx;
+	border-bottom: 1rpx solid #e0e0e0;
+}
+.app-title {
+	font-size: 36rpx;
+	font-weight: 600;
+	color: #000000;
+}
+
+/* 主要内容 */
+.main-content {
+	flex: 1;
+	padding: 30rpx;
+}
+
+/* 登录区域 */
+.login-section {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	margin-bottom: 60rpx;
+}
+.login-title {
+	font-size: 48rpx;
+	font-weight: 600;
+	color: #000000;
+	margin-bottom: 40rpx;
+}
+.login-btn {
+	width: 100%;
+	height: 100rpx;
+	background: linear-gradient(90deg, #007aff 0%, #00c851 100%);
+	color: #ffffff;
+	border: none;
+	border-radius: 16rpx;
+	font-size: 32rpx;
+	font-weight: 500;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+/* 用户信息区域 */
+.user-section {
+	margin-bottom: 40rpx;
+}
+.user-info {
+	display: flex;
+	align-items: center;
+	padding: 30rpx 0;
+	border-bottom: 1rpx solid #f0f0f0;
+}
+.avatar {
+	width: 100rpx;
+	height: 100rpx;
+	background-color: #007aff;
+	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin-right: 25rpx;
+}
+.avatar-text {
+	font-size: 36rpx;
+	font-weight: 600;
+	color: #ffffff;
+}
+.avatar-image {
+	width: 100rpx;
+	height: 100rpx;
+	border-radius: 50%;
+}
+.user-details {
+	flex: 1;
+}
+.user-name {
+	font-size: 32rpx;
+	font-weight: 600;
+	color: #000000;
+	display: block;
+	margin-bottom: 8rpx;
+}
+.user-id {
+	font-size: 24rpx;
+	color: #666666;
+	display: block;
+}
+.phone-status {
+	font-size: 22rpx;
+	color: #ff3b30;
+	display: block;
+	margin-top: 8rpx;
+}
+.phone-status.bound {
+	color: #00c851;
+}
+.edit-link {
+	font-size: 26rpx;
+	color: #007aff;
+}
+
+/* 会员信息 */
+.member-section {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 25rpx 0;
+	border-bottom: 1rpx solid #f0f0f0;
+}
+.member-info {
+	display: flex;
+	flex-direction: column;
+}
+.member-type {
+	font-size: 28rpx;
+	color: #000000;
+	margin-bottom: 8rpx;
+}
+.member-promo {
+	font-size: 24rpx;
+	color: #ff3b30;
+}
+.upgrade-btn {
+	background: linear-gradient(90deg, #007aff 0%, #00c851 100%);
+	color: #ffffff;
+	border: none;
+	border-radius: 8rpx;
+	padding: 12rpx 24rpx;
+	font-size: 26rpx;
+}
+
+/* 数据统计 */
+.stats-section {
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr 1fr;
+	gap: 20rpx;
+	padding: 25rpx 0;
+}
+.stat-item {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	text-align: center;
+}
+.stat-number {
+	font-size: 32rpx;
+	font-weight: 600;
+	color: #000000;
+	margin-bottom: 8rpx;
+}
+.stat-label {
+	font-size: 22rpx;
+	color: #666666;
+	margin-bottom: 8rpx;
+}
+.recharge-btn {
+	background-color: #007aff;
+	color: #ffffff;
+	border: none;
+	border-radius: 6rpx;
+	padding: 6rpx 12rpx;
+	font-size: 20rpx;
+}
+
+/* 功能菜单 */
+.menu-section {
+	background-color: #ffffff;
+	border-radius: 16rpx;
+	overflow: hidden;
+	margin-bottom: 40rpx;
+}
+.menu-item {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 30rpx;
+	border-bottom: 1rpx solid #f0f0f0;
+	position: relative;
+}
+.menu-item:last-child {
+	border-bottom: none;
+}
+.menu-text {
+	font-size: 30rpx;
+	color: #000000;
+}
+.menu-desc {
+	position: absolute;
+	left: 30rpx;
+	top: 70rpx;
+	font-size: 22rpx;
+	color: #666666;
+}
+.menu-right {
+	display: flex;
+	align-items: center;
+	gap: 15rpx;
+}
+.menu-url {
+	font-size: 24rpx;
+	color: #666666;
+}
+
+
+
+/* 退出登录 */
+.logout-section {
+	margin-bottom: 40rpx;
+}
+.logout-btn {
+	width: 100%;
+	background-color: #ffffff;
+	color: #ff3b30;
+	border: 1rpx solid #ff3b30;
+	border-radius: 12rpx;
+	padding: 25rpx;
+	font-size: 30rpx;
+}
+
+/* 底部信息 */
+.footer-section {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 10rpx;
+	padding: 40rpx 0;
+}
+.copyright {
+	font-size: 24rpx;
+	color: #999999;
+	text-align: center;
+}
+.icp {
+	font-size: 22rpx;
+	color: #999999;
+	text-align: center;
+}

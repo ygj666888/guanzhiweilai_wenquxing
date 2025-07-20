@@ -1,0 +1,359 @@
+<template>
+	<view class="usage-guide-container">
+		<scroll-view class="guide-content" scroll-y="true">
+			<!-- 快速开始 -->
+			<view class="guide-section">
+				<text class="section-title">快速开始</text>
+				<view class="step-list">
+					<view class="step-item" v-for="(step, index) in quickStartSteps" :key="index">
+						<view class="step-number">{{index + 1}}</view>
+						<view class="step-content">
+							<text class="step-title">{{step.title}}</text>
+							<text class="step-desc">{{step.description}}</text>
+						</view>
+					</view>
+				</view>
+			</view>
+			
+			<!-- 功能介绍 -->
+			<view class="guide-section">
+				<text class="section-title">功能介绍</text>
+				<view class="feature-list">
+					<view class="feature-item" v-for="(feature, index) in features" :key="index">
+						<view class="feature-icon">{{feature.icon}}</view>
+						<view class="feature-content">
+							<text class="feature-title">{{feature.title}}</text>
+							<text class="feature-desc">{{feature.description}}</text>
+						</view>
+					</view>
+				</view>
+			</view>
+			
+			<!-- 常见问题 -->
+			<view class="guide-section">
+				<text class="section-title">常见问题</text>
+				<view class="faq-list">
+					<view class="faq-item" v-for="(faq, index) in faqs" :key="index">
+						<view class="faq-question" @click="toggleFaq(index)">
+							<text class="question-text">{{faq.question}}</text>
+							<text class="question-arrow" :class="{ expanded: faq.expanded }">▼</text>
+						</view>
+						<view class="faq-answer" v-if="faq.expanded">
+							<text class="answer-text">{{faq.answer}}</text>
+						</view>
+					</view>
+				</view>
+			</view>
+			
+			<!-- 联系支持 -->
+			<view class="guide-section">
+				<text class="section-title">联系支持</text>
+				<view class="support-list">
+					<view class="support-item" @click="contactService">
+						<view class="support-icon">💬</view>
+						<text class="support-text">在线客服</text>
+					</view>
+					<view class="support-item" @click="sendEmail">
+						<view class="support-icon">📧</view>
+						<text class="support-text">邮件支持</text>
+					</view>
+				</view>
+			</view>
+		</scroll-view>
+	</view>
+</template>
+
+<script>
+export default {
+	data() {
+		return {
+			quickStartSteps: [
+				{
+					title: '注册登录',
+					description: '使用微信快速注册并登录账号'
+				},
+				{
+					title: '选择功能',
+					description: '在首页选择需要的AI创作功能'
+				},
+				{
+					title: '输入需求',
+					description: '详细描述您的创作需求和要求'
+				},
+				{
+					title: '生成内容',
+					description: 'AI将为您生成高质量的内容'
+				},
+				{
+					title: '编辑导出',
+					description: '对生成内容进行编辑并导出使用'
+				}
+			],
+			features: [
+				{
+					icon: '✍️',
+					title: '智能写作',
+					description: '支持论文、文章、报告等多种写作需求，AI智能生成高质量内容'
+				},
+				{
+					icon: '🎯',
+					title: '精准提问',
+					description: '联网提问功能，获取最新、最准确的信息和答案'
+				},
+				{
+					icon: '📚',
+					title: '知识库',
+					description: '上传文档建立专属知识库，基于文档内容进行智能问答'
+				},
+				{
+					icon: '⚡',
+					title: '快速创作',
+					description: '一键生成，支持多种格式导出，提高创作效率'
+				}
+			],
+			faqs: [
+				{
+					question: '如何获得创作硬币？',
+					answer: '您可以通过充值、邀请好友、每日签到等方式获得创作硬币。1元人民币可兑换100个创作硬币。',
+					expanded: false
+				},
+				{
+					question: 'AI生成的内容有版权吗？',
+					answer: 'AI生成的内容版权归用户所有，您可以自由使用和修改。但请注意遵守相关法律法规。',
+					expanded: false
+				},
+				{
+					question: '支持哪些文件格式？',
+					answer: '支持Word、PDF、TXT等多种格式的文档上传和导出，满足不同使用场景需求。',
+					expanded: false
+				},
+				{
+					question: '如何提高生成质量？',
+					answer: '详细描述需求、提供具体要求和背景信息，可以帮助AI生成更符合您期望的内容。',
+					expanded: false
+				},
+				{
+					question: '遇到问题怎么办？',
+					answer: '您可以联系在线客服、发送邮件或查看常见问题解答，我们会尽快为您解决问题。',
+					expanded: false
+				}
+			]
+		}
+	},
+	methods: {
+		toggleFaq(index) {
+			this.faqs[index].expanded = !this.faqs[index].expanded
+		},
+		
+		contactService() {
+			uni.openCustomerServiceChat({
+				extInfo: {
+					url: 'https://work.weixin.qq.com/kfid/kfc123456'
+				},
+				success: () => {
+					uni.showToast({
+						title: '正在打开客服',
+						icon: 'none'
+					})
+				}
+			})
+		},
+		
+		sendEmail() {
+			uni.setClipboardData({
+				data: 'support@guanzhi.com.cn',
+				success: () => {
+					uni.showToast({
+						title: '邮箱已复制',
+						icon: 'success'
+					})
+				}
+			})
+		}
+	}
+}
+</script>
+
+<style>
+.usage-guide-container {
+	flex: 1;
+	background-color: #f8f8f8;
+}
+
+.guide-content {
+	flex: 1;
+	padding: 30rpx;
+}
+
+.guide-section {
+	background-color: #ffffff;
+	border-radius: 16rpx;
+	padding: 40rpx;
+	margin-bottom: 30rpx;
+}
+
+.section-title {
+	font-size: 32rpx;
+	font-weight: 600;
+	color: #000000;
+	margin-bottom: 30rpx;
+	display: block;
+}
+
+.step-list {
+	display: flex;
+	flex-direction: column;
+	gap: 25rpx;
+}
+
+.step-item {
+	display: flex;
+	align-items: flex-start;
+	gap: 20rpx;
+}
+
+.step-number {
+	width: 50rpx;
+	height: 50rpx;
+	background-color: #007aff;
+	color: #ffffff;
+	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 24rpx;
+	font-weight: 600;
+	flex-shrink: 0;
+}
+
+.step-content {
+	flex: 1;
+}
+
+.step-title {
+	font-size: 28rpx;
+	font-weight: 600;
+	color: #000000;
+	display: block;
+	margin-bottom: 8rpx;
+}
+
+.step-desc {
+	font-size: 26rpx;
+	color: #666666;
+	line-height: 1.5;
+}
+
+.feature-list {
+	display: flex;
+	flex-direction: column;
+	gap: 25rpx;
+}
+
+.feature-item {
+	display: flex;
+	align-items: flex-start;
+	gap: 20rpx;
+}
+
+.feature-icon {
+	font-size: 50rpx;
+	flex-shrink: 0;
+}
+
+.feature-content {
+	flex: 1;
+}
+
+.feature-title {
+	font-size: 28rpx;
+	font-weight: 600;
+	color: #000000;
+	display: block;
+	margin-bottom: 8rpx;
+}
+
+.feature-desc {
+	font-size: 26rpx;
+	color: #666666;
+	line-height: 1.5;
+}
+
+.faq-list {
+	display: flex;
+	flex-direction: column;
+	gap: 20rpx;
+}
+
+.faq-item {
+	border: 1rpx solid #e0e0e0;
+	border-radius: 8rpx;
+	overflow: hidden;
+}
+
+.faq-question {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 25rpx;
+	background-color: #f8f8f8;
+}
+
+.question-text {
+	font-size: 28rpx;
+	color: #000000;
+	flex: 1;
+}
+
+.question-arrow {
+	font-size: 24rpx;
+	color: #666666;
+	transition: transform 0.3s;
+}
+
+.question-arrow.expanded {
+	transform: rotate(180deg);
+}
+
+.faq-answer {
+	padding: 25rpx;
+	background-color: #ffffff;
+}
+
+.answer-text {
+	font-size: 26rpx;
+	color: #666666;
+	line-height: 1.5;
+}
+
+.support-list {
+	display: flex;
+	gap: 30rpx;
+}
+
+.support-item {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 15rpx;
+	padding: 30rpx;
+	border: 2rpx solid #e0e0e0;
+	border-radius: 12rpx;
+	transition: all 0.3s;
+}
+
+.support-item:active {
+	background-color: #f0f8ff;
+	border-color: #007aff;
+}
+
+.support-icon {
+	font-size: 50rpx;
+}
+
+.support-text {
+	font-size: 28rpx;
+	color: #000000;
+}
+</style> 

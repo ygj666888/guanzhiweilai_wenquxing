@@ -1,0 +1,273 @@
+<template>
+	<view class="about-us-container">
+		<!-- 公司信息 -->
+		<view class="company-section">
+			<view class="company-logo">
+				<text class="logo-text">冠智未来</text>
+			</view>
+			<text class="company-name">冠智未来科技有限公司</text>
+			<text class="company-desc">专注于AI智能写作的领先企业</text>
+		</view>
+		
+		<!-- 版本信息 -->
+		<view class="version-section">
+			<view class="version-item">
+				<text class="version-label">当前版本</text>
+				<text class="version-value">v1.0.0</text>
+			</view>
+			<view class="version-item">
+				<text class="version-label">更新时间</text>
+				<text class="version-value">2024-01-15</text>
+			</view>
+		</view>
+		
+		<!-- 公司介绍 -->
+		<view class="intro-section">
+			<text class="section-title">公司介绍</text>
+			<text class="intro-text">
+				冠智未来科技有限公司是一家专注于人工智能技术应用的创新企业。我们致力于为用户提供最先进的AI写作助手，帮助用户提高创作效率，实现智能化写作。
+				
+				我们的产品基于最新的自然语言处理技术，支持多种写作场景，包括学术论文、商业报告、创意写作等。通过持续的技术创新和用户反馈优化，我们不断改进产品功能，为用户提供更好的使用体验。
+				
+				我们相信，AI技术应该服务于人类，让创作变得更加简单、高效、有趣。
+			</text>
+		</view>
+		
+		<!-- 联系方式 -->
+		<view class="contact-section">
+			<text class="section-title">联系我们</text>
+			<view class="contact-list">
+				<view class="contact-item" @click="copyEmail">
+					<view class="contact-icon">📧</view>
+					<text class="contact-text">contact@guanzhi.com.cn</text>
+				</view>
+				<view class="contact-item" @click="copyPhone">
+					<view class="contact-icon">📞</view>
+					<text class="contact-text">400-888-8888</text>
+				</view>
+				<view class="contact-item" @click="copyAddress">
+					<view class="contact-icon">📍</view>
+					<text class="contact-text">上海市浦东新区张江高科技园区</text>
+				</view>
+			</view>
+		</view>
+		
+		<!-- 法律信息 -->
+		<view class="legal-section">
+			<text class="section-title">法律信息</text>
+			<view class="legal-list">
+				<text class="legal-item">• 沪ICP备2024000000号-1</text>
+				<text class="legal-item">• 沪公网安备: 31010402000000号</text>
+				<text class="legal-item">• 营业执照: 91310115MA1K4B8X8N</text>
+			</view>
+		</view>
+		
+		<!-- 版权信息 -->
+		<view class="copyright-section">
+			<text class="copyright-text">© 2024 冠智未来科技有限公司</text>
+			<text class="copyright-text">保留所有权利</text>
+		</view>
+	</view>
+</template>
+
+<script>
+export default {
+	methods: {
+		copyEmail() {
+			uni.setClipboardData({
+				data: 'contact@guanzhi.com.cn',
+				success: () => {
+					uni.showToast({
+						title: '邮箱已复制',
+						icon: 'success'
+					})
+				}
+			})
+		},
+		
+		copyPhone() {
+			uni.setClipboardData({
+				data: '400-888-8888',
+				success: () => {
+					uni.showToast({
+						title: '电话已复制',
+						icon: 'success'
+					})
+				}
+			})
+		},
+		
+		copyAddress() {
+			uni.setClipboardData({
+				data: '上海市浦东新区张江高科技园区',
+				success: () => {
+					uni.showToast({
+						title: '地址已复制',
+						icon: 'success'
+					})
+				}
+			})
+		}
+	}
+}
+</script>
+
+<style>
+.about-us-container {
+	flex: 1;
+	background-color: #f8f8f8;
+	padding: 30rpx;
+}
+
+.company-section {
+	background-color: #ffffff;
+	border-radius: 16rpx;
+	padding: 60rpx 40rpx;
+	margin-bottom: 30rpx;
+	text-align: center;
+}
+
+.company-logo {
+	width: 120rpx;
+	height: 120rpx;
+	background: linear-gradient(90deg, #007aff 0%, #00c851 100%);
+	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin: 0 auto 30rpx;
+}
+
+.logo-text {
+	font-size: 32rpx;
+	font-weight: 600;
+	color: #ffffff;
+}
+
+.company-name {
+	font-size: 32rpx;
+	font-weight: 600;
+	color: #000000;
+	display: block;
+	margin-bottom: 15rpx;
+}
+
+.company-desc {
+	font-size: 26rpx;
+	color: #666666;
+}
+
+.version-section {
+	background-color: #ffffff;
+	border-radius: 16rpx;
+	padding: 40rpx;
+	margin-bottom: 30rpx;
+}
+
+.version-item {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 20rpx 0;
+}
+
+.version-item:first-child {
+	padding-top: 0;
+}
+
+.version-item:last-child {
+	padding-bottom: 0;
+}
+
+.version-label {
+	font-size: 28rpx;
+	color: #666666;
+}
+
+.version-value {
+	font-size: 28rpx;
+	color: #000000;
+}
+
+.intro-section {
+	background-color: #ffffff;
+	border-radius: 16rpx;
+	padding: 40rpx;
+	margin-bottom: 30rpx;
+}
+
+.section-title {
+	font-size: 32rpx;
+	font-weight: 600;
+	color: #000000;
+	margin-bottom: 25rpx;
+	display: block;
+}
+
+.intro-text {
+	font-size: 26rpx;
+	color: #666666;
+	line-height: 1.8;
+}
+
+.contact-section {
+	background-color: #ffffff;
+	border-radius: 16rpx;
+	padding: 40rpx;
+	margin-bottom: 30rpx;
+}
+
+.contact-list {
+	display: flex;
+	flex-direction: column;
+	gap: 20rpx;
+}
+
+.contact-item {
+	display: flex;
+	align-items: center;
+	gap: 20rpx;
+	padding: 20rpx;
+	border: 1rpx solid #f0f0f0;
+	border-radius: 8rpx;
+}
+
+.contact-icon {
+	font-size: 32rpx;
+}
+
+.contact-text {
+	font-size: 28rpx;
+	color: #000000;
+}
+
+.legal-section {
+	background-color: #ffffff;
+	border-radius: 16rpx;
+	padding: 40rpx;
+	margin-bottom: 30rpx;
+}
+
+.legal-list {
+	display: flex;
+	flex-direction: column;
+	gap: 15rpx;
+}
+
+.legal-item {
+	font-size: 26rpx;
+	color: #666666;
+}
+
+.copyright-section {
+	text-align: center;
+	padding: 40rpx 0;
+}
+
+.copyright-text {
+	font-size: 24rpx;
+	color: #999999;
+	display: block;
+	margin-bottom: 10rpx;
+}
+</style> 

@@ -1,0 +1,335 @@
+<template>
+	<view class="share-earn-container">
+		<!-- 收益统计 -->
+		<view class="stats-section">
+			<view class="stat-item">
+				<text class="stat-number">{{totalEarned}}</text>
+				<text class="stat-label">累计收益（硬币）</text>
+			</view>
+			<view class="stat-item">
+				<text class="stat-number">{{inviteCount}}</text>
+				<text class="stat-label">邀请人数</text>
+			</view>
+		</view>
+		
+		<!-- 分享方式 -->
+		<view class="share-methods-section">
+			<text class="section-title">分享方式</text>
+			
+			<view class="share-methods">
+				<view class="share-method" @click="shareToWechat">
+					<view class="method-icon">💬</view>
+					<text class="method-name">分享给好友</text>
+					<text class="method-desc">通过微信分享给好友</text>
+				</view>
+				
+				<view class="share-method" @click="shareToMoments">
+					<view class="method-icon">👥</view>
+					<text class="method-name">分享到朋友圈</text>
+					<text class="method-desc">分享到微信朋友圈</text>
+				</view>
+				
+				<view class="share-method" @click="copyLink">
+					<view class="method-icon">🔗</view>
+					<text class="method-name">复制链接</text>
+					<text class="method-desc">复制邀请链接分享</text>
+				</view>
+				
+				<view class="share-method" @click="generateQRCode">
+					<view class="method-icon">📱</view>
+					<text class="method-name">生成二维码</text>
+					<text class="method-desc">生成邀请二维码</text>
+				</view>
+			</view>
+		</view>
+		
+		<!-- 邀请记录 -->
+		<view class="invite-records-section">
+			<text class="section-title">邀请记录</text>
+			
+			<view class="records-list" v-if="inviteRecords.length > 0">
+				<view class="record-item" v-for="(record, index) in inviteRecords" :key="index">
+					<view class="record-info">
+						<text class="record-name">{{record.name}}</text>
+						<text class="record-time">{{record.time}}</text>
+					</view>
+					<view class="record-status" :class="record.status">
+						<text class="status-text">{{record.statusText}}</text>
+					</view>
+				</view>
+			</view>
+			
+			<view class="empty-records" v-else>
+				<text class="empty-text">暂无邀请记录</text>
+				<text class="empty-desc">邀请好友注册即可获得奖励</text>
+			</view>
+		</view>
+		
+		<!-- 奖励规则 -->
+		<view class="rules-section">
+			<text class="section-title">奖励规则</text>
+			<view class="rules-list">
+				<text class="rule-item">• 成功邀请1位好友注册，获得1000硬币</text>
+				<text class="rule-item">• 好友完成首次创作，额外获得500硬币</text>
+				<text class="rule-item">• 好友充值任意金额，获得充值金额10%的硬币</text>
+				<text class="rule-item">• 邀请奖励无上限，多邀多得</text>
+				<text class="rule-item">• 奖励将在好友完成相应操作后立即发放</text>
+			</view>
+		</view>
+	</view>
+</template>
+
+<script>
+export default {
+	data() {
+		return {
+			totalEarned: 5000,
+			inviteCount: 3,
+			inviteRecords: [
+				{
+					name: '张三',
+					time: '2024-01-15 14:30',
+					status: 'success',
+					statusText: '已注册'
+				},
+				{
+					name: '李四',
+					time: '2024-01-10 09:15',
+					status: 'success',
+					statusText: '已注册'
+				},
+				{
+					name: '王五',
+					time: '2024-01-08 16:45',
+					status: 'pending',
+					statusText: '待注册'
+				}
+			]
+		}
+	},
+	methods: {
+		shareToWechat() {
+			uni.showShareMenu({
+				withShareTicket: true,
+				success: () => {
+					uni.showToast({
+						title: '分享功能开发中',
+						icon: 'none'
+					})
+				}
+			})
+		},
+		
+		shareToMoments() {
+			uni.showToast({
+				title: '朋友圈分享功能开发中',
+				icon: 'none'
+			})
+		},
+		
+		copyLink() {
+			const inviteLink = 'https://guanzhi.com.cn/invite?code=USER123'
+			uni.setClipboardData({
+				data: inviteLink,
+				success: () => {
+					uni.showToast({
+						title: '邀请链接已复制',
+						icon: 'success'
+					})
+				}
+			})
+		},
+		
+		generateQRCode() {
+			uni.showToast({
+				title: '二维码生成功能开发中',
+				icon: 'none'
+			})
+		}
+	}
+}
+</script>
+
+<style>
+.share-earn-container {
+	flex: 1;
+	background-color: #f8f8f8;
+	padding: 30rpx;
+}
+
+.stats-section {
+	background-color: #ffffff;
+	border-radius: 16rpx;
+	padding: 40rpx;
+	margin-bottom: 30rpx;
+	display: flex;
+	justify-content: space-around;
+}
+
+.stat-item {
+	text-align: center;
+}
+
+.stat-number {
+	font-size: 48rpx;
+	font-weight: 600;
+	color: #007aff;
+	display: block;
+	margin-bottom: 10rpx;
+}
+
+.stat-label {
+	font-size: 26rpx;
+	color: #666666;
+}
+
+.share-methods-section {
+	background-color: #ffffff;
+	border-radius: 16rpx;
+	padding: 40rpx;
+	margin-bottom: 30rpx;
+}
+
+.section-title {
+	font-size: 32rpx;
+	font-weight: 600;
+	color: #000000;
+	margin-bottom: 30rpx;
+	display: block;
+}
+
+.share-methods {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 20rpx;
+}
+
+.share-method {
+	border: 2rpx solid #e0e0e0;
+	border-radius: 12rpx;
+	padding: 30rpx;
+	text-align: center;
+	transition: all 0.3s;
+}
+
+.share-method:active {
+	background-color: #f0f8ff;
+	border-color: #007aff;
+}
+
+.method-icon {
+	font-size: 60rpx;
+	margin-bottom: 15rpx;
+}
+
+.method-name {
+	font-size: 28rpx;
+	font-weight: 600;
+	color: #000000;
+	display: block;
+	margin-bottom: 8rpx;
+}
+
+.method-desc {
+	font-size: 24rpx;
+	color: #666666;
+}
+
+.invite-records-section {
+	background-color: #ffffff;
+	border-radius: 16rpx;
+	padding: 40rpx;
+	margin-bottom: 30rpx;
+}
+
+.records-list {
+	display: flex;
+	flex-direction: column;
+	gap: 20rpx;
+}
+
+.record-item {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 25rpx;
+	border: 1rpx solid #f0f0f0;
+	border-radius: 8rpx;
+}
+
+.record-info {
+	display: flex;
+	flex-direction: column;
+	gap: 8rpx;
+}
+
+.record-name {
+	font-size: 28rpx;
+	color: #000000;
+}
+
+.record-time {
+	font-size: 24rpx;
+	color: #666666;
+}
+
+.record-status {
+	padding: 8rpx 16rpx;
+	border-radius: 6rpx;
+}
+
+.record-status.success {
+	background-color: #f0fff0;
+}
+
+.record-status.pending {
+	background-color: #fff8f0;
+}
+
+.status-text {
+	font-size: 24rpx;
+}
+
+.record-status.success .status-text {
+	color: #00c851;
+}
+
+.record-status.pending .status-text {
+	color: #ff9500;
+}
+
+.empty-records {
+	text-align: center;
+	padding: 60rpx 0;
+}
+
+.empty-text {
+	font-size: 28rpx;
+	color: #666666;
+	display: block;
+	margin-bottom: 10rpx;
+}
+
+.empty-desc {
+	font-size: 24rpx;
+	color: #999999;
+}
+
+.rules-section {
+	background-color: #ffffff;
+	border-radius: 16rpx;
+	padding: 40rpx;
+}
+
+.rules-list {
+	display: flex;
+	flex-direction: column;
+	gap: 15rpx;
+}
+
+.rule-item {
+	font-size: 26rpx;
+	color: #666666;
+	line-height: 1.5;
+}
+</style> 

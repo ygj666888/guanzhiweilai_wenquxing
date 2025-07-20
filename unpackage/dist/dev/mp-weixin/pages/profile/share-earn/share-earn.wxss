@@ -1,0 +1,153 @@
+:host{display:flex;flex-direction:column}
+
+.share-earn-container {
+	flex: 1;
+	background-color: #f8f8f8;
+	padding: 30rpx;
+}
+.stats-section {
+	background-color: #ffffff;
+	border-radius: 16rpx;
+	padding: 40rpx;
+	margin-bottom: 30rpx;
+	display: flex;
+	justify-content: space-around;
+}
+.stat-item {
+	text-align: center;
+}
+.stat-number {
+	font-size: 48rpx;
+	font-weight: 600;
+	color: #007aff;
+	display: block;
+	margin-bottom: 10rpx;
+}
+.stat-label {
+	font-size: 26rpx;
+	color: #666666;
+}
+.share-methods-section {
+	background-color: #ffffff;
+	border-radius: 16rpx;
+	padding: 40rpx;
+	margin-bottom: 30rpx;
+}
+.section-title {
+	font-size: 32rpx;
+	font-weight: 600;
+	color: #000000;
+	margin-bottom: 30rpx;
+	display: block;
+}
+.share-methods {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 20rpx;
+}
+.share-method {
+	border: 2rpx solid #e0e0e0;
+	border-radius: 12rpx;
+	padding: 30rpx;
+	text-align: center;
+	transition: all 0.3s;
+}
+.share-method:active {
+	background-color: #f0f8ff;
+	border-color: #007aff;
+}
+.method-icon {
+	font-size: 60rpx;
+	margin-bottom: 15rpx;
+}
+.method-name {
+	font-size: 28rpx;
+	font-weight: 600;
+	color: #000000;
+	display: block;
+	margin-bottom: 8rpx;
+}
+.method-desc {
+	font-size: 24rpx;
+	color: #666666;
+}
+.invite-records-section {
+	background-color: #ffffff;
+	border-radius: 16rpx;
+	padding: 40rpx;
+	margin-bottom: 30rpx;
+}
+.records-list {
+	display: flex;
+	flex-direction: column;
+	gap: 20rpx;
+}
+.record-item {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 25rpx;
+	border: 1rpx solid #f0f0f0;
+	border-radius: 8rpx;
+}
+.record-info {
+	display: flex;
+	flex-direction: column;
+	gap: 8rpx;
+}
+.record-name {
+	font-size: 28rpx;
+	color: #000000;
+}
+.record-time {
+	font-size: 24rpx;
+	color: #666666;
+}
+.record-status {
+	padding: 8rpx 16rpx;
+	border-radius: 6rpx;
+}
+.record-status.success {
+	background-color: #f0fff0;
+}
+.record-status.pending {
+	background-color: #fff8f0;
+}
+.status-text {
+	font-size: 24rpx;
+}
+.record-status.success .status-text {
+	color: #00c851;
+}
+.record-status.pending .status-text {
+	color: #ff9500;
+}
+.empty-records {
+	text-align: center;
+	padding: 60rpx 0;
+}
+.empty-text {
+	font-size: 28rpx;
+	color: #666666;
+	display: block;
+	margin-bottom: 10rpx;
+}
+.empty-desc {
+	font-size: 24rpx;
+	color: #999999;
+}
+.rules-section {
+	background-color: #ffffff;
+	border-radius: 16rpx;
+	padding: 40rpx;
+}
+.rules-list {
+	display: flex;
+	flex-direction: column;
+	gap: 15rpx;
+}
+.rule-item {
+	font-size: 26rpx;
+	color: #666666;
+	line-height: 1.5;
+}

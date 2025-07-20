@@ -1,0 +1,412 @@
+<template>
+	<view class="upgrade-container">
+		<!-- 会员权益介绍 -->
+		<view class="benefits-section">
+			<view class="benefits-header">
+				<text class="benefits-title">VIP会员特权</text>
+				<text class="benefits-subtitle">解锁更多创作功能，享受专属服务</text>
+			</view>
+			
+			<view class="benefits-list">
+				<view class="benefit-item" v-for="(benefit, index) in benefits" :key="index">
+					<view class="benefit-icon">✓</view>
+					<text class="benefit-text">{{benefit}}</text>
+				</view>
+			</view>
+		</view>
+		
+		<!-- 会员套餐 -->
+		<view class="plans-section">
+			<text class="section-title">选择套餐</text>
+			
+			<view class="plans-list">
+				<view 
+					class="plan-item" 
+					:class="{ active: selectedPlan === index }"
+					v-for="(plan, index) in plans" 
+					:key="index"
+					@click="selectPlan(index)"
+				>
+					<view class="plan-header">
+						<text class="plan-name">{{plan.name}}</text>
+						<view class="plan-tag" v-if="plan.tag">{{plan.tag}}</view>
+					</view>
+					<view class="plan-price">
+						<text class="price-symbol">¥</text>
+						<text class="price-number">{{plan.price}}</text>
+						<text class="price-unit">/{{plan.unit}}</text>
+					</view>
+					<text class="plan-original" v-if="plan.originalPrice">原价 ¥{{plan.originalPrice}}</text>
+					<text class="plan-desc">{{plan.description}}</text>
+				</view>
+			</view>
+		</view>
+		
+		<!-- 支付方式 -->
+		<view class="payment-section">
+			<text class="section-title">支付方式</text>
+			
+			<view class="payment-list">
+				<view 
+					class="payment-item" 
+					:class="{ active: selectedPayment === index }"
+					v-for="(payment, index) in paymentMethods" 
+					:key="index"
+					@click="selectPayment(index)"
+				>
+					<view class="payment-icon">{{payment.icon}}</view>
+					<text class="payment-name">{{payment.name}}</text>
+					<view class="payment-check" v-if="selectedPayment === index">✓</view>
+				</view>
+			</view>
+		</view>
+		
+		<!-- 底部支付按钮 -->
+		<view class="bottom-section">
+			<view class="price-summary">
+				<text class="summary-text">总计：</text>
+				<text class="summary-price">¥{{selectedPlanPrice}}</text>
+			</view>
+			<button class="pay-btn" @click="confirmPayment">立即开通</button>
+		</view>
+	</view>
+</template>
+
+<script>
+export default {
+	data() {
+		return {
+			selectedPlan: 1, // 默认选择月卡
+			selectedPayment: 0, // 默认选择微信支付
+			benefits: [
+				'无限次AI创作，无字数限制',
+				'优先使用最新AI模型',
+				'专属客服支持',
+				'高级模板库访问',
+				'批量导出功能',
+				'数据统计分析'
+			],
+			plans: [
+				{
+					name: '周卡',
+					price: '19.9',
+					originalPrice: '29.9',
+					unit: '周',
+					description: '适合短期体验',
+					tag: '体验'
+				},
+				{
+					name: '月卡',
+					price: '59.9',
+					originalPrice: '99.9',
+					unit: '月',
+					description: '性价比之选',
+					tag: '推荐'
+				},
+				{
+					name: '年卡',
+					price: '599',
+					originalPrice: '1199',
+					unit: '年',
+					description: '最优惠选择',
+					tag: '超值'
+				}
+			],
+			paymentMethods: [
+				{ name: '微信支付', icon: '💳' },
+				{ name: '支付宝', icon: '💰' }
+			]
+		}
+	},
+	computed: {
+		selectedPlanPrice() {
+			return this.plans[this.selectedPlan].price
+		}
+	},
+	methods: {
+		selectPlan(index) {
+			this.selectedPlan = index
+		},
+		
+		selectPayment(index) {
+			this.selectedPayment = index
+		},
+		
+		confirmPayment() {
+			const plan = this.plans[this.selectedPlan]
+			const payment = this.paymentMethods[this.selectedPayment]
+			
+			uni.showModal({
+				title: '确认支付',
+				content: `确认使用${payment.name}支付${plan.name} ¥${plan.price}？`,
+				success: (res) => {
+					if (res.confirm) {
+						this.processPayment()
+					}
+				}
+			})
+		},
+		
+		processPayment() {
+			uni.showLoading({
+				title: '支付中...'
+			})
+			
+			setTimeout(() => {
+				uni.hideLoading()
+				uni.showToast({
+					title: '支付成功',
+					icon: 'success'
+				})
+				
+				setTimeout(() => {
+					uni.navigateBack()
+				}, 1500)
+			}, 2000)
+		}
+	}
+}
+</script>
+
+<style>
+.upgrade-container {
+	flex: 1;
+	background-color: #f8f8f8;
+	padding: 30rpx;
+}
+
+.benefits-section {
+	background-color: #ffffff;
+	border-radius: 16rpx;
+	padding: 40rpx;
+	margin-bottom: 30rpx;
+}
+
+.benefits-header {
+	text-align: center;
+	margin-bottom: 40rpx;
+}
+
+.benefits-title {
+	font-size: 36rpx;
+	font-weight: 600;
+	color: #000000;
+	display: block;
+	margin-bottom: 10rpx;
+}
+
+.benefits-subtitle {
+	font-size: 26rpx;
+	color: #666666;
+}
+
+.benefits-list {
+	display: flex;
+	flex-direction: column;
+	gap: 20rpx;
+}
+
+.benefit-item {
+	display: flex;
+	align-items: center;
+	gap: 20rpx;
+}
+
+.benefit-icon {
+	width: 40rpx;
+	height: 40rpx;
+	background-color: #00c851;
+	color: #ffffff;
+	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 24rpx;
+	font-weight: 600;
+}
+
+.benefit-text {
+	font-size: 28rpx;
+	color: #000000;
+}
+
+.plans-section {
+	background-color: #ffffff;
+	border-radius: 16rpx;
+	padding: 40rpx;
+	margin-bottom: 30rpx;
+}
+
+.section-title {
+	font-size: 32rpx;
+	font-weight: 600;
+	color: #000000;
+	margin-bottom: 30rpx;
+	display: block;
+}
+
+.plans-list {
+	display: flex;
+	flex-direction: column;
+	gap: 20rpx;
+}
+
+.plan-item {
+	border: 2rpx solid #e0e0e0;
+	border-radius: 12rpx;
+	padding: 30rpx;
+	position: relative;
+	transition: all 0.3s;
+}
+
+.plan-item.active {
+	border-color: #007aff;
+	background-color: #f0f8ff;
+}
+
+.plan-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 20rpx;
+}
+
+.plan-name {
+	font-size: 32rpx;
+	font-weight: 600;
+	color: #000000;
+}
+
+.plan-tag {
+	background-color: #ff3b30;
+	color: #ffffff;
+	padding: 6rpx 12rpx;
+	border-radius: 6rpx;
+	font-size: 22rpx;
+}
+
+.plan-price {
+	display: flex;
+	align-items: baseline;
+	margin-bottom: 10rpx;
+}
+
+.price-symbol {
+	font-size: 28rpx;
+	color: #ff3b30;
+}
+
+.price-number {
+	font-size: 48rpx;
+	font-weight: 600;
+	color: #ff3b30;
+}
+
+.price-unit {
+	font-size: 26rpx;
+	color: #666666;
+}
+
+.plan-original {
+	font-size: 24rpx;
+	color: #999999;
+	text-decoration: line-through;
+	margin-bottom: 10rpx;
+	display: block;
+}
+
+.plan-desc {
+	font-size: 26rpx;
+	color: #666666;
+}
+
+.payment-section {
+	background-color: #ffffff;
+	border-radius: 16rpx;
+	padding: 40rpx;
+	margin-bottom: 30rpx;
+}
+
+.payment-list {
+	display: flex;
+	flex-direction: column;
+	gap: 20rpx;
+}
+
+.payment-item {
+	display: flex;
+	align-items: center;
+	padding: 30rpx;
+	border: 2rpx solid #e0e0e0;
+	border-radius: 12rpx;
+	position: relative;
+}
+
+.payment-item.active {
+	border-color: #007aff;
+	background-color: #f0f8ff;
+}
+
+.payment-icon {
+	font-size: 40rpx;
+	margin-right: 20rpx;
+}
+
+.payment-name {
+	font-size: 28rpx;
+	color: #000000;
+	flex: 1;
+}
+
+.payment-check {
+	width: 40rpx;
+	height: 40rpx;
+	background-color: #007aff;
+	color: #ffffff;
+	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 24rpx;
+	font-weight: 600;
+}
+
+.bottom-section {
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	background-color: #ffffff;
+	padding: 30rpx;
+	border-top: 1rpx solid #e0e0e0;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.price-summary {
+	display: flex;
+	align-items: baseline;
+}
+
+.summary-text {
+	font-size: 28rpx;
+	color: #000000;
+}
+
+.summary-price {
+	font-size: 36rpx;
+	font-weight: 600;
+	color: #ff3b30;
+}
+
+.pay-btn {
+	background: linear-gradient(90deg, #007aff 0%, #00c851 100%);
+	color: #ffffff;
+	border: none;
+	border-radius: 12rpx;
+	padding: 20rpx 60rpx;
+	font-size: 30rpx;
+	font-weight: 500;
+}
+</style> 

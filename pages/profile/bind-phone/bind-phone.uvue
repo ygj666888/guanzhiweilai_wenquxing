@@ -1,0 +1,292 @@
+<template>
+	<view class="bind-phone-container">
+		<!-- 手机号输入 -->
+		<view class="input-section">
+			<view class="input-item">
+				<text class="input-label">手机号</text>
+				<input 
+					class="phone-input" 
+					v-model="phoneNumber" 
+					type="number" 
+					maxlength="11"
+					placeholder="请输入手机号"
+				/>
+			</view>
+		</view>
+		
+		<!-- 验证码输入 -->
+		<view class="input-section">
+			<view class="input-item">
+				<text class="input-label">验证码</text>
+				<view class="code-section">
+					<input 
+						class="code-input" 
+						v-model="verificationCode" 
+						type="number" 
+						maxlength="6"
+						placeholder="请输入验证码"
+					/>
+					<button 
+						class="send-code-btn" 
+						:disabled="!canSendCode || countdown > 0"
+						@click="sendCode"
+					>
+						{{countdown > 0 ? `${countdown}s` : '发送验证码'}}
+					</button>
+				</view>
+			</view>
+		</view>
+		
+		<!-- 绑定按钮 -->
+		<view class="button-section">
+			<button class="bind-btn" @click="bindPhone" :disabled="!canBind">
+				绑定
+			</button>
+		</view>
+		
+		<!-- 绑定成功弹窗 -->
+		<view class="success-overlay" v-if="showSuccess">
+			<view class="success-modal">
+				<view class="success-icon">✓</view>
+				<text class="success-text">绑定成功</text>
+			</view>
+		</view>
+	</view>
+</template>
+
+<script>
+export default {
+	data() {
+		return {
+			phoneNumber: '',
+			verificationCode: '',
+			countdown: 0,
+			showSuccess: false
+		}
+	},
+	computed: {
+		canSendCode() {
+			return this.phoneNumber.length === 11
+		},
+		canBind() {
+			return this.phoneNumber.length === 11 && this.verificationCode.length === 6
+		}
+	},
+	methods: {
+		sendCode() {
+			if (!this.canSendCode) {
+				uni.showToast({
+					title: '请输入正确的手机号',
+					icon: 'none'
+				})
+				return
+			}
+			
+			// 模拟发送验证码
+			uni.showLoading({
+				title: '发送中...'
+			})
+			
+			setTimeout(() => {
+				uni.hideLoading()
+				uni.showToast({
+					title: '验证码已发送',
+					icon: 'success'
+				})
+				
+				// 开始倒计时
+				this.countdown = 60
+				this.startCountdown()
+			}, 1000)
+		},
+		
+		startCountdown() {
+			if (this.countdown > 0) {
+				setTimeout(() => {
+					this.countdown--
+					this.startCountdown()
+				}, 1000)
+			}
+		},
+		
+		bindPhone() {
+			if (!this.canBind) {
+				uni.showToast({
+					title: '请填写完整信息',
+					icon: 'none'
+				})
+				return
+			}
+			
+			uni.showLoading({
+				title: '绑定中...'
+			})
+			
+			setTimeout(() => {
+				uni.hideLoading()
+				
+				// 显示成功弹窗
+				this.showSuccess = true
+				
+				// 保存绑定状态到本地存储
+				uni.setStorageSync('phoneBound', true)
+				uni.setStorageSync('phoneNumber', this.phoneNumber)
+				
+				// 更新用户信息
+				const userInfo = uni.getStorageSync('userInfo') || {
+					nickname: 'inner2466',
+					userId: '1933438229252542466',
+					isVip: false,
+					coins: 5000,
+					rechargeOrders: 0,
+					questionRecords: 0,
+					creationRecords: 0
+				}
+				userInfo.phoneBound = true
+				userInfo.phoneNumber = this.phoneNumber
+				uni.setStorageSync('userInfo', userInfo)
+				
+				// 3秒后返回上一页
+				setTimeout(() => {
+					this.showSuccess = false
+					uni.navigateBack()
+				}, 3000)
+			}, 2000)
+		}
+	}
+}
+</script>
+
+<style>
+.bind-phone-container {
+	flex: 1;
+	background-color: #f8f8f8;
+	padding: 30rpx;
+}
+
+.input-section {
+	background-color: #ffffff;
+	border-radius: 16rpx;
+	padding: 40rpx;
+	margin-bottom: 30rpx;
+}
+
+.input-item {
+	display: flex;
+	flex-direction: column;
+	gap: 20rpx;
+}
+
+.input-label {
+	font-size: 28rpx;
+	color: #000000;
+}
+
+.phone-input {
+	width: 100%;
+	height: 80rpx;
+	border: 1rpx solid #e0e0e0;
+	border-radius: 8rpx;
+	padding: 0 20rpx;
+	font-size: 28rpx;
+	background-color: #ffffff;
+}
+
+.code-section {
+	display: flex;
+	gap: 20rpx;
+}
+
+.code-input {
+	flex: 1;
+	height: 80rpx;
+	border: 1rpx solid #e0e0e0;
+	border-radius: 8rpx;
+	padding: 0 20rpx;
+	font-size: 28rpx;
+	background-color: #ffffff;
+}
+
+.send-code-btn {
+	width: 200rpx;
+	height: 80rpx;
+	background-color: #007aff;
+	color: #ffffff;
+	border: none;
+	border-radius: 8rpx;
+	font-size: 26rpx;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.send-code-btn:disabled {
+	background-color: #cccccc;
+	color: #999999;
+}
+
+.button-section {
+	padding: 30rpx 0;
+}
+
+.bind-btn {
+	width: 100%;
+	height: 100rpx;
+	background: linear-gradient(90deg, #007aff 0%, #00c851 100%);
+	color: #ffffff;
+	border: none;
+	border-radius: 16rpx;
+	font-size: 32rpx;
+	font-weight: 500;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.bind-btn:disabled {
+	background: #cccccc;
+	color: #999999;
+}
+
+.success-overlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-color: rgba(0, 0, 0, 0.5);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	z-index: 999;
+}
+
+.success-modal {
+	background-color: #333333;
+	border-radius: 16rpx;
+	padding: 60rpx 80rpx;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 30rpx;
+}
+
+.success-icon {
+	width: 80rpx;
+	height: 80rpx;
+	background-color: #00c851;
+	color: #ffffff;
+	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 48rpx;
+	font-weight: 600;
+}
+
+.success-text {
+	font-size: 32rpx;
+	color: #ffffff;
+	font-weight: 500;
+}
+</style> 

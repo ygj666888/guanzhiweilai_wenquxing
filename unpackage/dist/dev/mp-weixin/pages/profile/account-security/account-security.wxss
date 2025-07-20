@@ -1,0 +1,70 @@
+:host{display:flex;flex-direction:column}
+
+.account-security-container {
+	flex: 1;
+	background-color: #f8f8f8;
+	padding: 30rpx;
+}
+.security-list {
+	background-color: #ffffff;
+	border-radius: 16rpx;
+	overflow: hidden;
+	margin-bottom: 30rpx;
+}
+.security-item {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 30rpx;
+	border-bottom: 1rpx solid #f0f0f0;
+}
+.security-item:last-child {
+	border-bottom: none;
+}
+.item-left {
+	display: flex;
+	align-items: center;
+	gap: 20rpx;
+}
+.item-icon {
+	font-size: 40rpx;
+}
+.item-content {
+	display: flex;
+	flex-direction: column;
+	gap: 8rpx;
+}
+.item-title {
+	font-size: 28rpx;
+	color: #000000;
+}
+.item-desc {
+	font-size: 24rpx;
+	color: #666666;
+}
+.item-arrow {
+	font-size: 28rpx;
+	color: #999999;
+}
+.security-tips {
+	background-color: #ffffff;
+	border-radius: 16rpx;
+	padding: 40rpx;
+}
+.tips-title {
+	font-size: 28rpx;
+	font-weight: 600;
+	color: #000000;
+	margin-bottom: 20rpx;
+	display: block;
+}
+.tips-list {
+	display: flex;
+	flex-direction: column;
+	gap: 15rpx;
+}
+.tip-item {
+	font-size: 26rpx;
+	color: #666666;
+	line-height: 1.5;
+}

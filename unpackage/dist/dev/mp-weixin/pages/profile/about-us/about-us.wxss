@@ -1,0 +1,135 @@
+:host{display:flex;flex-direction:column}
+
+.about-us-container {
+	flex: 1;
+	background-color: #f8f8f8;
+	padding: 30rpx;
+}
+.company-section {
+	background-color: #ffffff;
+	border-radius: 16rpx;
+	padding: 60rpx 40rpx;
+	margin-bottom: 30rpx;
+	text-align: center;
+}
+.company-logo {
+	width: 120rpx;
+	height: 120rpx;
+	background: linear-gradient(90deg, #007aff 0%, #00c851 100%);
+	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin: 0 auto 30rpx;
+}
+.logo-text {
+	font-size: 32rpx;
+	font-weight: 600;
+	color: #ffffff;
+}
+.company-name {
+	font-size: 32rpx;
+	font-weight: 600;
+	color: #000000;
+	display: block;
+	margin-bottom: 15rpx;
+}
+.company-desc {
+	font-size: 26rpx;
+	color: #666666;
+}
+.version-section {
+	background-color: #ffffff;
+	border-radius: 16rpx;
+	padding: 40rpx;
+	margin-bottom: 30rpx;
+}
+.version-item {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 20rpx 0;
+}
+.version-item:first-child {
+	padding-top: 0;
+}
+.version-item:last-child {
+	padding-bottom: 0;
+}
+.version-label {
+	font-size: 28rpx;
+	color: #666666;
+}
+.version-value {
+	font-size: 28rpx;
+	color: #000000;
+}
+.intro-section {
+	background-color: #ffffff;
+	border-radius: 16rpx;
+	padding: 40rpx;
+	margin-bottom: 30rpx;
+}
+.section-title {
+	font-size: 32rpx;
+	font-weight: 600;
+	color: #000000;
+	margin-bottom: 25rpx;
+	display: block;
+}
+.intro-text {
+	font-size: 26rpx;
+	color: #666666;
+	line-height: 1.8;
+}
+.contact-section {
+	background-color: #ffffff;
+	border-radius: 16rpx;
+	padding: 40rpx;
+	margin-bottom: 30rpx;
+}
+.contact-list {
+	display: flex;
+	flex-direction: column;
+	gap: 20rpx;
+}
+.contact-item {
+	display: flex;
+	align-items: center;
+	gap: 20rpx;
+	padding: 20rpx;
+	border: 1rpx solid #f0f0f0;
+	border-radius: 8rpx;
+}
+.contact-icon {
+	font-size: 32rpx;
+}
+.contact-text {
+	font-size: 28rpx;
+	color: #000000;
+}
+.legal-section {
+	background-color: #ffffff;
+	border-radius: 16rpx;
+	padding: 40rpx;
+	margin-bottom: 30rpx;
+}
+.legal-list {
+	display: flex;
+	flex-direction: column;
+	gap: 15rpx;
+}
+.legal-item {
+	font-size: 26rpx;
+	color: #666666;
+}
+.copyright-section {
+	text-align: center;
+	padding: 40rpx 0;
+}
+.copyright-text {
+	font-size: 24rpx;
+	color: #999999;
+	display: block;
+	margin-bottom: 10rpx;
+}
