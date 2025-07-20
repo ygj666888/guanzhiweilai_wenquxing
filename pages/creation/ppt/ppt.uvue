@@ -1,0 +1,53 @@
+<template>
+	<view class="ppt-container">
+		<view class="content">
+			<text class="title">PPT助手</text>
+			<text class="desc">一键快速生成，轻松搞定PPT</text>
+			<text class="status">功能开发中...</text>
+		</view>
+	</view>
+</template>
+
+<script>
+export default {
+	data() {
+		return {
+			
+		}
+	}
+}
+</script>
+
+<style>
+.ppt-container {
+	flex: 1;
+	background-color: #f8f8f8;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.content {
+	text-align: center;
+}
+
+.title {
+	font-size: 36rpx;
+	font-weight: 600;
+	color: #000000;
+	margin-bottom: 20rpx;
+	display: block;
+}
+
+.desc {
+	font-size: 28rpx;
+	color: #666666;
+	margin-bottom: 40rpx;
+	display: block;
+}
+
+.status {
+	font-size: 24rpx;
+	color: #999999;
+}
+</style> 

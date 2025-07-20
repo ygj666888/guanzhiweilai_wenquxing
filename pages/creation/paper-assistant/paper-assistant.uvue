@@ -1,0 +1,637 @@
+<template>
+	<view class="paper-assistant-container">
+		<!-- 订单提醒 -->
+		<view class="order-notice" v-if="hasPendingOrder" @click="continueOrder">
+			<text class="notice-text">你有一个待确认订单，点击继续</text>
+		</view>
+
+		<!-- 创作流程指示 -->
+		<view class="process-indicator">
+			<view class="process-step" :class="{ active: currentStep >= 1 }">
+				<text class="step-number">1</text>
+				<text class="step-text">创建任务</text>
+			</view>
+			<view class="process-line" :class="{ active: currentStep >= 2 }"></view>
+			<view class="process-step" :class="{ active: currentStep >= 2 }">
+				<text class="step-number">2</text>
+				<text class="step-text">撰写文章</text>
+			</view>
+			<view class="process-line" :class="{ active: currentStep >= 3 }"></view>
+			<view class="process-step" :class="{ active: currentStep >= 3 }">
+				<text class="step-number">3</text>
+				<text class="step-text">下载文章</text>
+			</view>
+		</view>
+
+		<!-- 创建任务表单 -->
+		<view class="task-form" v-if="currentStep === 1">
+			<view class="form-section">
+				<view class="form-item">
+					<text class="form-label">标题 <text class="required">*</text></text>
+					<input class="form-input" v-model="taskData.title" placeholder="请输入论文标题" />
+				</view>
+
+				<view class="form-item">
+					<text class="form-label">写作大纲 <text class="required">*</text></text>
+					<view class="option-group">
+						<view class="option-item" :class="{ active: taskData.outlineType === 'ai' }" @click="taskData.outlineType = 'ai'">
+							<text class="option-text">AI智能</text>
+						</view>
+						<view class="option-item" :class="{ active: taskData.outlineType === 'custom' }" @click="taskData.outlineType = 'custom'">
+							<text class="option-text">指定大纲</text>
+						</view>
+					</view>
+					<textarea v-if="taskData.outlineType === 'custom'" class="form-textarea" v-model="taskData.customOutline" placeholder="请输入自定义大纲" />
+				</view>
+
+				<view class="form-item">
+					<text class="form-label">参考文献 <text class="required">*</text></text>
+					<view class="option-group">
+						<view class="option-item" :class="{ active: taskData.referenceType === 'ai' }" @click="taskData.referenceType = 'ai'">
+							<text class="option-text">AI智能</text>
+						</view>
+						<view class="option-item" :class="{ active: taskData.referenceType === 'upload' }" @click="taskData.referenceType = 'upload'">
+							<text class="option-text">上传文档</text>
+						</view>
+						<view class="option-item" :class="{ active: taskData.referenceType === 'knowledge' }" @click="taskData.referenceType = 'knowledge'">
+							<text class="option-text">知识库</text>
+						</view>
+					</view>
+				</view>
+
+				<view class="form-item">
+					<text class="form-label">写作风格 <text class="required">*</text></text>
+					<view class="style-section">
+						<picker class="form-picker" :value="styleIndex" :range="styleOptions" @change="onStyleChange">
+							<text class="picker-text">{{styleOptions[styleIndex]}}</text>
+						</picker>
+						<text class="help-icon" @click="showStyleHelp">?</text>
+					</view>
+				</view>
+
+				<view class="form-item">
+					<text class="form-label">语言 <text class="required">*</text></text>
+					<view class="option-group">
+						<view class="option-item" :class="{ active: taskData.language === 'zh' }" @click="taskData.language = 'zh'">
+							<text class="option-text">中文</text>
+						</view>
+						<view class="option-item" :class="{ active: taskData.language === 'en' }" @click="taskData.language = 'en'">
+							<text class="option-text">英文</text>
+						</view>
+					</view>
+				</view>
+
+				<view class="form-item">
+					<text class="form-label">篇幅长度 <text class="required">*</text></text>
+					<view class="option-group">
+						<view class="option-item" :class="{ active: taskData.length === 4000 }" @click="taskData.length = 4000">
+							<text class="option-text">4000字</text>
+						</view>
+						<view class="option-item" :class="{ active: taskData.length === 8000 }" @click="taskData.length = 8000">
+							<text class="option-text">8000字</text>
+						</view>
+						<view class="option-item" :class="{ active: taskData.length === 20000 }" @click="taskData.length = 20000">
+							<text class="option-text">20000字</text>
+						</view>
+					</view>
+				</view>
+
+				<view class="form-item">
+					<text class="form-label">辅助信息</text>
+					<textarea class="form-textarea" v-model="taskData.additionalInfo" placeholder="请输入辅助信息（可选）" />
+				</view>
+			</view>
+
+			<view class="button-section">
+				<button class="create-btn" @click="createTask">创作</button>
+			</view>
+		</view>
+
+		<!-- 撰写文章页面 -->
+		<view class="writing-section" v-if="currentStep === 2">
+			<view class="writing-status">
+				<text class="status-text">正在撰写文章，请稍候...</text>
+				<view class="progress-bar">
+					<view class="progress-fill" :style="{ width: writingProgress + '%' }"></view>
+				</view>
+				<text class="progress-text">{{writingProgress}}%</text>
+			</view>
+		</view>
+
+		<!-- 下载文章页面 -->
+		<view class="download-section" v-if="currentStep === 3">
+			<view class="download-content">
+				<text class="download-title">文章撰写完成！</text>
+				<text class="download-desc">您的论文已生成完成，可以下载查看</text>
+				<button class="download-btn" @click="downloadArticle">导出</button>
+			</view>
+		</view>
+
+		<!-- 写作风格帮助弹窗 -->
+		<view class="help-overlay" v-if="showHelp" @click="showHelp = false">
+			<view class="help-modal" @click.stop>
+				<view class="help-header">
+					<text class="help-title">写作风格说明</text>
+					<text class="help-close" @click="showHelp = false">×</text>
+				</view>
+				<view class="help-content">
+					<view class="help-item">
+						<text class="help-style">专业风格:</text>
+						<text class="help-desc">适合本科生、专科生、初级研究</text>
+					</view>
+					<view class="help-item">
+						<text class="help-style">深奥风格:</text>
+						<text class="help-desc">适合博士生、硕士生、专业研究</text>
+					</view>
+					<view class="help-item">
+						<text class="help-style">理论风格:</text>
+						<text class="help-desc">适合教授、专家、资深研究</text>
+					</view>
+				</view>
+			</view>
+		</view>
+	</view>
+</template>
+
+<script>
+export default {
+	data() {
+		return {
+			hasPendingOrder: false,
+			currentStep: 1,
+			writingProgress: 0,
+			showHelp: false,
+			styleIndex: 0,
+			styleOptions: ['专业风格', '深奥风格', '理论风格'],
+			taskData: {
+				title: '',
+				outlineType: 'ai',
+				customOutline: '',
+				referenceType: 'ai',
+				style: '专业风格',
+				language: 'zh',
+				length: 4000,
+				additionalInfo: ''
+			}
+		}
+	},
+	onLoad() {
+		this.checkPendingOrder()
+	},
+	methods: {
+		checkPendingOrder() {
+			// 检查是否有待确认订单
+			const pendingOrder = uni.getStorageSync('pendingOrder')
+			this.hasPendingOrder = !!pendingOrder
+		},
+		
+		continueOrder() {
+			// 继续待确认订单
+			uni.showToast({
+				title: '继续订单功能开发中',
+				icon: 'none'
+			})
+		},
+		
+		onStyleChange(e) {
+			this.styleIndex = e.detail.value
+			this.taskData.style = this.styleOptions[this.styleIndex]
+		},
+		
+		showStyleHelp() {
+			this.showHelp = true
+		},
+		
+		createTask() {
+			// 验证必填项
+			if (!this.taskData.title.trim()) {
+				uni.showToast({
+					title: '请输入论文标题',
+					icon: 'none'
+				})
+				return
+			}
+			
+			// 检查硬币余额
+			const userInfo = uni.getStorageSync('userInfo') || {}
+			const requiredCoins = this.getRequiredCoins()
+			
+			if (userInfo.coins < requiredCoins) {
+				this.showInsufficientCoins(requiredCoins)
+				return
+			}
+			
+			// 开始创作
+			this.startWriting()
+		},
+		
+		getRequiredCoins() {
+			// 根据篇幅长度计算所需硬币
+			switch (this.taskData.length) {
+				case 4000: return 50000
+				case 8000: return 80000
+				case 20000: return 100000
+				default: return 50000
+			}
+		},
+		
+		showInsufficientCoins(requiredCoins) {
+			uni.showModal({
+				title: '硬币不足',
+				content: `这篇文章需要${requiredCoins}硬币，您的余额不足，是否前往充值？`,
+				confirmText: '立即充值',
+				success: (res) => {
+					if (res.confirm) {
+						uni.navigateTo({
+							url: '/pages/profile/recharge/recharge'
+						})
+					}
+				}
+			})
+		},
+		
+		startWriting() {
+			this.currentStep = 2
+			this.writingProgress = 0
+			
+			// 模拟写作进度
+			const timer = setInterval(() => {
+				this.writingProgress += Math.random() * 10
+				if (this.writingProgress >= 100) {
+					this.writingProgress = 100
+					clearInterval(timer)
+					setTimeout(() => {
+						this.currentStep = 3
+					}, 1000)
+				}
+			}, 500)
+		},
+		
+		downloadArticle() {
+			uni.showLoading({
+				title: '导出中...'
+			})
+			
+			setTimeout(() => {
+				uni.hideLoading()
+				
+				// 模拟复制下载链接并打开文档
+				const downloadUrl = 'https://www.wsxai.com/download/paper_123456.pdf'
+				uni.setClipboardData({
+					data: downloadUrl,
+					success: () => {
+						uni.showToast({
+							title: '下载链接已复制',
+							icon: 'success'
+						})
+						
+						// 打开文档
+						uni.navigateTo({
+							url: '/pages/webview/webview?url=' + encodeURIComponent(downloadUrl)
+						})
+					}
+				})
+			}, 2000)
+		}
+	}
+}
+</script>
+
+<style>
+.paper-assistant-container {
+	flex: 1;
+	background-color: #f8f8f8;
+	padding: 30rpx;
+}
+
+/* 订单提醒 */
+.order-notice {
+	background-color: #fff3cd;
+	border: 1rpx solid #ffeaa7;
+	border-radius: 12rpx;
+	padding: 20rpx;
+	margin-bottom: 30rpx;
+}
+
+.notice-text {
+	font-size: 26rpx;
+	color: #856404;
+}
+
+/* 创作流程指示 */
+.process-indicator {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin-bottom: 40rpx;
+	background-color: #ffffff;
+	border-radius: 16rpx;
+	padding: 30rpx;
+}
+
+.process-step {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 10rpx;
+}
+
+.step-number {
+	width: 60rpx;
+	height: 60rpx;
+	border-radius: 50%;
+	background-color: #e0e0e0;
+	color: #666666;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 24rpx;
+	font-weight: 600;
+}
+
+.process-step.active .step-number {
+	background-color: #007aff;
+	color: #ffffff;
+}
+
+.step-text {
+	font-size: 22rpx;
+	color: #666666;
+}
+
+.process-step.active .step-text {
+	color: #007aff;
+	font-weight: 600;
+}
+
+.process-line {
+	width: 100rpx;
+	height: 2rpx;
+	background-color: #e0e0e0;
+	margin: 0 20rpx;
+}
+
+.process-line.active {
+	background-color: #007aff;
+}
+
+/* 表单样式 */
+.task-form {
+	background-color: #ffffff;
+	border-radius: 16rpx;
+	padding: 30rpx;
+}
+
+.form-section {
+	margin-bottom: 40rpx;
+}
+
+.form-item {
+	margin-bottom: 30rpx;
+}
+
+.form-label {
+	font-size: 28rpx;
+	color: #000000;
+	margin-bottom: 15rpx;
+	display: block;
+}
+
+.required {
+	color: #ff3b30;
+}
+
+.form-input {
+	width: 100%;
+	height: 80rpx;
+	border: 1rpx solid #e0e0e0;
+	border-radius: 8rpx;
+	padding: 0 20rpx;
+	font-size: 28rpx;
+	background-color: #ffffff;
+}
+
+.form-textarea {
+	width: 100%;
+	height: 120rpx;
+	border: 1rpx solid #e0e0e0;
+	border-radius: 8rpx;
+	padding: 20rpx;
+	font-size: 28rpx;
+	background-color: #ffffff;
+}
+
+.option-group {
+	display: flex;
+	gap: 20rpx;
+	flex-wrap: wrap;
+}
+
+.option-item {
+	padding: 15rpx 25rpx;
+	border: 1rpx solid #e0e0e0;
+	border-radius: 8rpx;
+	background-color: #ffffff;
+}
+
+.option-item.active {
+	background-color: #007aff;
+	color: #ffffff;
+	border-color: #007aff;
+}
+
+.option-text {
+	font-size: 26rpx;
+}
+
+.style-section {
+	display: flex;
+	align-items: center;
+	gap: 20rpx;
+}
+
+.form-picker {
+	flex: 1;
+	height: 80rpx;
+	border: 1rpx solid #e0e0e0;
+	border-radius: 8rpx;
+	padding: 0 20rpx;
+	background-color: #ffffff;
+	display: flex;
+	align-items: center;
+}
+
+.picker-text {
+	font-size: 28rpx;
+	color: #000000;
+}
+
+.help-icon {
+	width: 40rpx;
+	height: 40rpx;
+	border-radius: 50%;
+	background-color: #007aff;
+	color: #ffffff;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 24rpx;
+}
+
+.button-section {
+	padding: 30rpx 0;
+}
+
+.create-btn {
+	width: 100%;
+	height: 100rpx;
+	background: linear-gradient(90deg, #007aff 0%, #00c851 100%);
+	color: #ffffff;
+	border: none;
+	border-radius: 16rpx;
+	font-size: 32rpx;
+	font-weight: 500;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+/* 撰写文章页面 */
+.writing-section {
+	background-color: #ffffff;
+	border-radius: 16rpx;
+	padding: 60rpx 30rpx;
+	text-align: center;
+}
+
+.writing-status {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 30rpx;
+}
+
+.status-text {
+	font-size: 32rpx;
+	color: #000000;
+	font-weight: 600;
+}
+
+.progress-bar {
+	width: 100%;
+	height: 20rpx;
+	background-color: #e0e0e0;
+	border-radius: 10rpx;
+	overflow: hidden;
+}
+
+.progress-fill {
+	height: 100%;
+	background: linear-gradient(90deg, #007aff 0%, #00c851 100%);
+	transition: width 0.3s ease;
+}
+
+.progress-text {
+	font-size: 28rpx;
+	color: #007aff;
+	font-weight: 600;
+}
+
+/* 下载页面 */
+.download-section {
+	background-color: #ffffff;
+	border-radius: 16rpx;
+	padding: 60rpx 30rpx;
+	text-align: center;
+}
+
+.download-content {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 30rpx;
+}
+
+.download-title {
+	font-size: 36rpx;
+	color: #000000;
+	font-weight: 600;
+}
+
+.download-desc {
+	font-size: 28rpx;
+	color: #666666;
+}
+
+.download-btn {
+	width: 200rpx;
+	height: 80rpx;
+	background: linear-gradient(90deg, #007aff 0%, #00c851 100%);
+	color: #ffffff;
+	border: none;
+	border-radius: 12rpx;
+	font-size: 28rpx;
+	font-weight: 500;
+}
+
+/* 帮助弹窗 */
+.help-overlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-color: rgba(0, 0, 0, 0.5);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	z-index: 999;
+}
+
+.help-modal {
+	background-color: #ffffff;
+	border-radius: 16rpx;
+	width: 80%;
+	max-width: 600rpx;
+}
+
+.help-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 30rpx;
+	border-bottom: 1rpx solid #e0e0e0;
+}
+
+.help-title {
+	font-size: 32rpx;
+	color: #000000;
+	font-weight: 600;
+}
+
+.help-close {
+	font-size: 40rpx;
+	color: #666666;
+}
+
+.help-content {
+	padding: 30rpx;
+}
+
+.help-item {
+	margin-bottom: 20rpx;
+}
+
+.help-style {
+	font-size: 28rpx;
+	color: #000000;
+	font-weight: 600;
+	display: block;
+	margin-bottom: 8rpx;
+}
+
+.help-desc {
+	font-size: 26rpx;
+	color: #666666;
+}
+</style> 

@@ -1,0 +1,10 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/profile/profile",
+    "pages/profile/edit-profile/edit-profile"
+  ],
+  "window": {
+    "navigationBarTitleText": "冠智未来文曲星小程序"
+  }
+} 

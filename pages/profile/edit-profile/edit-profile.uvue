@@ -11,12 +11,10 @@
 					<text class="avatar-tip">点击更换头像</text>
 				</view>
 			</view>
-			
 			<view class="form-item">
 				<text class="form-label">昵称</text>
 				<input class="form-input" v-model="userInfo.nickname" placeholder="请输入或选择微信昵称" />
 			</view>
-			
 			<view class="form-item">
 				<text class="form-label">用户ID</text>
 				<view class="userid-section">
@@ -26,38 +24,33 @@
 					</view>
 				</view>
 			</view>
-			
 			<view class="form-item">
 				<text class="form-label">绑定手机号</text>
 				<view class="phone-section" @click="goToBindPhone">
 					<text class="phone-status" :class="{ bound: userInfo.phoneBound }">
 						{{userInfo.phoneBound ? '已绑定' : '绑定成功送5000硬币'}}
 					</text>
-					<text class="phone-arrow">></text>
+					<text class="phone-arrow">&gt;</text>
 				</view>
 			</view>
-			
 			<view class="form-item">
 				<text class="form-label">性别</text>
 				<picker class="form-picker" :value="genderIndex" :range="genderOptions" @change="onGenderChange">
 					<text class="picker-text">{{genderOptions[genderIndex]}}</text>
 				</picker>
 			</view>
-			
 			<view class="form-item">
 				<text class="form-label">生日</text>
 				<picker class="form-picker" mode="date" :value="userInfo.birthday" @change="onBirthdayChange">
 					<text class="picker-text">{{userInfo.birthday || '请选择生日'}}</text>
 				</picker>
 			</view>
-			
 			<view class="form-item">
 				<text class="form-label">个人简介</text>
 				<textarea class="form-textarea" v-model="userInfo.bio" placeholder="请输入个人简介" maxlength="200" />
 				<text class="char-count">{{userInfo.bio.length}}/200</text>
 			</view>
 		</view>
-		
 		<view class="button-section">
 			<button class="save-btn" @click="saveProfile">保存</button>
 		</view>
@@ -84,41 +77,26 @@ export default {
 	onLoad() {
 		this.loadUserData()
 	},
-	
 	onShow() {
-		// 每次显示页面时重新加载数据，确保显示最新信息
 		this.loadUserData()
 	},
-	
-	loadUserData() {
-		// 从本地存储加载用户信息
-		const savedUserInfo = uni.getStorageSync('userInfo')
-		if (savedUserInfo) {
-			this.userInfo = { ...this.userInfo, ...savedUserInfo }
-		}
-		
-		// 从本地存储加载头像
-		const savedAvatar = uni.getStorageSync('userAvatar')
-		if (savedAvatar) {
-			this.userInfo.avatar = savedAvatar
-		}
-		
-		// 检查手机绑定状态
-		const phoneBound = uni.getStorageSync('phoneBound')
-		if (phoneBound) {
-			this.userInfo.phoneBound = true
-			// 确保用户信息中也包含手机绑定状态
-			if (!this.userInfo.phoneBound) {
-				this.userInfo.phoneBound = true
-				uni.setStorageSync('userInfo', this.userInfo)
-			}
-		}
-		
-		// 设置性别索引
-		this.genderIndex = this.genderOptions.indexOf(this.userInfo.gender)
-		if (this.genderIndex === -1) this.genderIndex = 0
-	},
 	methods: {
+		loadUserData() {
+			const savedUserInfo = uni.getStorageSync('userInfo')
+			if (savedUserInfo) {
+				this.userInfo = { ...this.userInfo, ...savedUserInfo }
+			}
+			const savedAvatar = uni.getStorageSync('userAvatar')
+			if (savedAvatar) {
+				this.userInfo.avatar = savedAvatar
+			}
+			const phoneBound = uni.getStorageSync('phoneBound')
+			if (phoneBound) {
+				this.userInfo.phoneBound = true
+			}
+			this.genderIndex = this.genderOptions.indexOf(this.userInfo.gender)
+			if (this.genderIndex === -1) this.genderIndex = 0
+		},
 		chooseAvatar() {
 			uni.chooseImage({
 				count: 1,
@@ -126,7 +104,6 @@ export default {
 				sourceType: ['album', 'camera'],
 				success: (res) => {
 					this.userInfo.avatar = res.tempFilePaths[0]
-					// 保存到本地存储
 					uni.setStorageSync('userAvatar', res.tempFilePaths[0])
 					uni.showToast({
 						title: '头像已选择',
@@ -135,16 +112,13 @@ export default {
 				}
 			})
 		},
-		
 		onGenderChange(e) {
 			this.genderIndex = e.detail.value
 			this.userInfo.gender = this.genderOptions[this.genderIndex]
 		},
-		
 		onBirthdayChange(e) {
 			this.userInfo.birthday = e.detail.value
 		},
-		
 		copyUserId() {
 			uni.setClipboardData({
 				data: this.userInfo.userId,
@@ -156,28 +130,22 @@ export default {
 				}
 			})
 		},
-		
 		goToBindPhone() {
 			uni.navigateTo({
 				url: '/pages/profile/bind-phone/bind-phone'
 			})
 		},
-		
 		saveProfile() {
 			uni.showLoading({
 				title: '保存中...'
 			})
-			
-			// 保存用户信息到本地存储
 			uni.setStorageSync('userInfo', this.userInfo)
-			
 			setTimeout(() => {
 				uni.hideLoading()
 				uni.showToast({
 					title: '保存成功',
 					icon: 'success'
 				})
-				
 				setTimeout(() => {
 					uni.navigateBack()
 				}, 1500)

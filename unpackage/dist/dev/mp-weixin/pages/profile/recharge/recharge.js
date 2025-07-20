@@ -8,46 +8,16 @@ const _sfc_main = common_vendor.defineComponent({
       selectedPayment: 0,
       customAmount: "",
       packages: [
-        new UTSJSONObject({
-          amount: 1e3,
-          price: "10",
-          bonus: 0,
-          tag: ""
-        }),
-        new UTSJSONObject({
-          amount: 5e3,
-          price: "50",
-          bonus: 500,
-          tag: "推荐"
-        }),
-        new UTSJSONObject({
-          amount: 1e4,
-          price: "100",
-          bonus: 1500,
-          tag: "超值"
-        }),
-        new UTSJSONObject({
-          amount: 2e4,
-          price: "200",
-          bonus: 4e3,
-          tag: "特惠"
-        }),
-        new UTSJSONObject({
-          amount: 5e4,
-          price: "500",
-          bonus: 12e3,
-          tag: "最优惠"
-        }),
-        new UTSJSONObject({
-          amount: 1e5,
-          price: "1000",
-          bonus: 3e4,
-          tag: "土豪"
-        })
+        new UTSJSONObject({ amount: 1e3, price: "10" }),
+        new UTSJSONObject({ amount: 5e3, price: "50" }),
+        new UTSJSONObject({ amount: 1e4, price: "100" }),
+        new UTSJSONObject({ amount: 2e4, price: "200" }),
+        new UTSJSONObject({ amount: 5e4, price: "500" }),
+        new UTSJSONObject({ amount: 1e5, price: "1000" })
       ],
       paymentMethods: [
-        new UTSJSONObject({ name: "微信支付", icon: "💳" }),
-        new UTSJSONObject({ name: "支付宝", icon: "💰" })
+        new UTSJSONObject({ name: "微信支付" }),
+        new UTSJSONObject({ name: "支付宝" })
       ]
     };
   },
@@ -62,8 +32,7 @@ const _sfc_main = common_vendor.defineComponent({
       if (this.customAmount && this.customAmount > 0) {
         return Math.floor(parseFloat(this.customAmount) * 100);
       }
-      const pkg = this.packages[this.selectedPackage];
-      return pkg.amount + pkg.bonus;
+      return this.packages[this.selectedPackage].amount;
     }
   },
   methods: {
@@ -87,15 +56,10 @@ const _sfc_main = common_vendor.defineComponent({
       }));
     },
     processRecharge() {
-      common_vendor.index.showLoading({
-        title: "充值中..."
-      });
+      common_vendor.index.showLoading({ title: "充值中..." });
       setTimeout(() => {
         common_vendor.index.hideLoading();
-        common_vendor.index.showToast({
-          title: "充值成功",
-          icon: "success"
-        });
+        common_vendor.index.showToast({ title: "充值成功", icon: "success" });
         this.currentBalance += this.totalCoins;
         setTimeout(() => {
           common_vendor.index.navigateBack();
@@ -111,31 +75,22 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
       return common_vendor.e({
         a: common_vendor.t(pkg.amount),
         b: common_vendor.t(pkg.price),
-        c: pkg.bonus
-      }, pkg.bonus ? {
-        d: common_vendor.t(pkg.bonus)
-      } : {}, {
-        e: pkg.tag
-      }, pkg.tag ? {
-        f: common_vendor.t(pkg.tag)
-      } : {}, {
-        g: $data.selectedPackage === index ? 1 : "",
-        h: index,
-        i: common_vendor.o(($event) => $options.selectPackage(index), index)
+        c: index === 1
+      }, index === 1 ? {} : {}, {
+        d: $data.selectedPackage === index ? 1 : "",
+        e: index,
+        f: common_vendor.o(($event) => $options.selectPackage(index), index)
       });
     }),
     c: $data.customAmount,
     d: common_vendor.o(($event) => $data.customAmount = $event.detail.value),
     e: common_vendor.f($data.paymentMethods, (payment, index, i0) => {
-      return common_vendor.e({
-        a: common_vendor.t(payment.icon),
-        b: common_vendor.t(payment.name),
-        c: $data.selectedPayment === index
-      }, $data.selectedPayment === index ? {} : {}, {
-        d: $data.selectedPayment === index ? 1 : "",
-        e: index,
-        f: common_vendor.o(($event) => $options.selectPayment(index), index)
-      });
+      return {
+        a: common_vendor.t(payment.name),
+        b: $data.selectedPayment === index ? 1 : "",
+        c: index,
+        d: common_vendor.o(($event) => $options.selectPayment(index), index)
+      };
     }),
     f: common_vendor.t($options.totalAmount),
     g: common_vendor.t($options.totalCoins),

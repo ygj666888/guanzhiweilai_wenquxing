@@ -1,0 +1,298 @@
+@import "../../../uvue.wxss";
+:host{display:flex;flex-direction:column}
+
+.paper-assistant-container {
+	flex: 1;
+	background-color: #f8f8f8;
+	padding: 30rpx;
+}
+
+/* 订单提醒 */
+.order-notice {
+	background-color: #fff3cd;
+	border: 1rpx solid #ffeaa7;
+	border-radius: 12rpx;
+	padding: 20rpx;
+	margin-bottom: 30rpx;
+}
+.notice-text {
+	font-size: 26rpx;
+	color: #856404;
+}
+
+/* 创作流程指示 */
+.process-indicator {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin-bottom: 40rpx;
+	background-color: #ffffff;
+	border-radius: 16rpx;
+	padding: 30rpx;
+}
+.process-step {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 10rpx;
+}
+.step-number {
+	width: 60rpx;
+	height: 60rpx;
+	border-radius: 50%;
+	background-color: #e0e0e0;
+	color: #666666;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 24rpx;
+	font-weight: 600;
+}
+.process-step.active .step-number {
+	background-color: #007aff;
+	color: #ffffff;
+}
+.step-text {
+	font-size: 22rpx;
+	color: #666666;
+}
+.process-step.active .step-text {
+	color: #007aff;
+	font-weight: 600;
+}
+.process-line {
+	width: 100rpx;
+	height: 2rpx;
+	background-color: #e0e0e0;
+	margin: 0 20rpx;
+}
+.process-line.active {
+	background-color: #007aff;
+}
+
+/* 表单样式 */
+.task-form {
+	background-color: #ffffff;
+	border-radius: 16rpx;
+	padding: 30rpx;
+}
+.form-section {
+	margin-bottom: 40rpx;
+}
+.form-item {
+	margin-bottom: 30rpx;
+}
+.form-label {
+	font-size: 28rpx;
+	color: #000000;
+	margin-bottom: 15rpx;
+	display: block;
+}
+.required {
+	color: #ff3b30;
+}
+.form-input {
+	width: 100%;
+	height: 80rpx;
+	border: 1rpx solid #e0e0e0;
+	border-radius: 8rpx;
+	padding: 0 20rpx;
+	font-size: 28rpx;
+	background-color: #ffffff;
+}
+.form-textarea {
+	width: 100%;
+	height: 120rpx;
+	border: 1rpx solid #e0e0e0;
+	border-radius: 8rpx;
+	padding: 20rpx;
+	font-size: 28rpx;
+	background-color: #ffffff;
+}
+.option-group {
+	display: flex;
+	gap: 20rpx;
+	flex-wrap: wrap;
+}
+.option-item {
+	padding: 15rpx 25rpx;
+	border: 1rpx solid #e0e0e0;
+	border-radius: 8rpx;
+	background-color: #ffffff;
+}
+.option-item.active {
+	background-color: #007aff;
+	color: #ffffff;
+	border-color: #007aff;
+}
+.option-text {
+	font-size: 26rpx;
+}
+.style-section {
+	display: flex;
+	align-items: center;
+	gap: 20rpx;
+}
+.form-picker {
+	flex: 1;
+	height: 80rpx;
+	border: 1rpx solid #e0e0e0;
+	border-radius: 8rpx;
+	padding: 0 20rpx;
+	background-color: #ffffff;
+	display: flex;
+	align-items: center;
+}
+.picker-text {
+	font-size: 28rpx;
+	color: #000000;
+}
+.help-icon {
+	width: 40rpx;
+	height: 40rpx;
+	border-radius: 50%;
+	background-color: #007aff;
+	color: #ffffff;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 24rpx;
+}
+.button-section {
+	padding: 30rpx 0;
+}
+.create-btn {
+	width: 100%;
+	height: 100rpx;
+	background: linear-gradient(90deg, #007aff 0%, #00c851 100%);
+	color: #ffffff;
+	border: none;
+	border-radius: 16rpx;
+	font-size: 32rpx;
+	font-weight: 500;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+/* 撰写文章页面 */
+.writing-section {
+	background-color: #ffffff;
+	border-radius: 16rpx;
+	padding: 60rpx 30rpx;
+	text-align: center;
+}
+.writing-status {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 30rpx;
+}
+.status-text {
+	font-size: 32rpx;
+	color: #000000;
+	font-weight: 600;
+}
+.progress-bar {
+	width: 100%;
+	height: 20rpx;
+	background-color: #e0e0e0;
+	border-radius: 10rpx;
+	overflow: hidden;
+}
+.progress-fill {
+	height: 100%;
+	background: linear-gradient(90deg, #007aff 0%, #00c851 100%);
+	transition: width 0.3s ease;
+}
+.progress-text {
+	font-size: 28rpx;
+	color: #007aff;
+	font-weight: 600;
+}
+
+/* 下载页面 */
+.download-section {
+	background-color: #ffffff;
+	border-radius: 16rpx;
+	padding: 60rpx 30rpx;
+	text-align: center;
+}
+.download-content {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 30rpx;
+}
+.download-title {
+	font-size: 36rpx;
+	color: #000000;
+	font-weight: 600;
+}
+.download-desc {
+	font-size: 28rpx;
+	color: #666666;
+}
+.download-btn {
+	width: 200rpx;
+	height: 80rpx;
+	background: linear-gradient(90deg, #007aff 0%, #00c851 100%);
+	color: #ffffff;
+	border: none;
+	border-radius: 12rpx;
+	font-size: 28rpx;
+	font-weight: 500;
+}
+
+/* 帮助弹窗 */
+.help-overlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-color: rgba(0, 0, 0, 0.5);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	z-index: 999;
+}
+.help-modal {
+	background-color: #ffffff;
+	border-radius: 16rpx;
+	width: 80%;
+	max-width: 600rpx;
+}
+.help-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 30rpx;
+	border-bottom: 1rpx solid #e0e0e0;
+}
+.help-title {
+	font-size: 32rpx;
+	color: #000000;
+	font-weight: 600;
+}
+.help-close {
+	font-size: 40rpx;
+	color: #666666;
+}
+.help-content {
+	padding: 30rpx;
+}
+.help-item {
+	margin-bottom: 20rpx;
+}
+.help-style {
+	font-size: 28rpx;
+	color: #000000;
+	font-weight: 600;
+	display: block;
+	margin-bottom: 8rpx;
+}
+.help-desc {
+	font-size: 26rpx;
+	color: #666666;
+}

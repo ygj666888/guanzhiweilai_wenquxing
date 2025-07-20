@@ -16,6 +16,13 @@ if (!Math) {
   "./pages/profile/about-us/about-us.js";
   "./pages/profile/feedback/feedback.js";
   "./pages/profile/bind-phone/bind-phone.js";
+  "./pages/creation/paper-assistant/paper-assistant.js";
+  "./pages/creation/ppt/ppt.js";
+  "./pages/creation/experience/experience.js";
+  "./pages/creation/speech/speech.js";
+  "./pages/qa/history/history.js";
+  "./pages/login/login.js";
+  "./pages/login/phone-login.js";
 }
 const _sfc_main = common_vendor.defineComponent(new UTSJSONObject({
   onLaunch: function() {

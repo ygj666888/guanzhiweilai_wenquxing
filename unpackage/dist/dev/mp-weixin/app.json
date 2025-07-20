@@ -13,7 +13,14 @@
     "pages/profile/account-security/account-security",
     "pages/profile/about-us/about-us",
     "pages/profile/feedback/feedback",
-    "pages/profile/bind-phone/bind-phone"
+    "pages/profile/bind-phone/bind-phone",
+    "pages/creation/paper-assistant/paper-assistant",
+    "pages/creation/ppt/ppt",
+    "pages/creation/experience/experience",
+    "pages/creation/speech/speech",
+    "pages/qa/history/history",
+    "pages/login/login",
+    "pages/login/phone-login"
   ],
   "window": {
     "navigationBarTextStyle": "black",

@@ -1,5 +1,6 @@
 "use strict";
 const common_vendor = require("../../common/vendor.js");
+const utils_auth = require("../../utils/auth.js");
 const _sfc_main = common_vendor.defineComponent({
   data() {
     return {
@@ -19,40 +20,66 @@ const _sfc_main = common_vendor.defineComponent({
     this.loadUserData();
   },
   onShow() {
+    common_vendor.index.__f__("log", "at pages/profile/profile.uvue:146", "Profile页面 - onShow 触发");
     this.loadUserData();
-  },
-  loadUserData() {
-    const savedUserInfo = common_vendor.index.getStorageSync("userInfo");
-    if (savedUserInfo) {
-      this.userInfo = Object.assign(Object.assign({}, this.userInfo), savedUserInfo);
-    }
-    const savedAvatar = common_vendor.index.getStorageSync("userAvatar");
-    if (savedAvatar) {
-      this.userInfo.avatar = savedAvatar;
-    }
-    const phoneBound = common_vendor.index.getStorageSync("phoneBound");
-    if (phoneBound) {
-      this.userInfo.phoneBound = true;
-      if (!this.userInfo.phoneBound) {
-        this.userInfo.phoneBound = true;
-        common_vendor.index.setStorageSync("userInfo", this.userInfo);
-      }
+    if (utils_auth.auth.checkAndClearLoginStatusUpdated()) {
+      common_vendor.index.__f__("log", "at pages/profile/profile.uvue:151", "Profile页面 - 检测到登录状态更新，重新检查");
+      this.loadUserData();
     }
   },
   methods: {
-    // 微信登录
-    wechatLogin() {
-      common_vendor.index.showLoading({
-        title: "登录中..."
-      });
-      setTimeout(() => {
-        common_vendor.index.hideLoading();
+    // 加载用户数据
+    loadUserData() {
+      const result = utils_auth.auth.checkLoginStatus();
+      if (result.isLoggedIn) {
         this.isLoggedIn = true;
-        common_vendor.index.showToast({
-          title: "登录成功",
-          icon: "success"
-        });
-      }, 2e3);
+        this.userInfo = Object.assign(Object.assign({}, this.userInfo), result.userInfo);
+        common_vendor.index.__f__("log", "at pages/profile/profile.uvue:165", "Profile页面 - 登录成功，用户信息:", this.userInfo);
+        const savedAvatar = common_vendor.index.getStorageSync("userAvatar");
+        if (savedAvatar) {
+          this.userInfo.avatar = savedAvatar;
+        }
+        const phoneBound = common_vendor.index.getStorageSync("phoneBound");
+        if (phoneBound) {
+          this.userInfo.phoneBound = true;
+          if (!this.userInfo.phoneBound) {
+            this.userInfo.phoneBound = true;
+            common_vendor.index.setStorageSync("userInfo", this.userInfo);
+          }
+        }
+      } else {
+        this.isLoggedIn = false;
+        this.userInfo = {
+          nickname: "",
+          userId: "",
+          isVip: false,
+          coins: 0,
+          rechargeOrders: 0,
+          questionRecords: 0,
+          creationRecords: 0
+        };
+        common_vendor.index.__f__("log", "at pages/profile/profile.uvue:194", "Profile页面 - 未登录状态");
+      }
+    },
+    // 清除登录数据
+    clearLoginData() {
+      utils_auth.auth.clearLoginData();
+      this.isLoggedIn = false;
+      this.userInfo = {
+        nickname: "",
+        userId: "",
+        isVip: false,
+        coins: 0,
+        rechargeOrders: 0,
+        questionRecords: 0,
+        creationRecords: 0
+      };
+    },
+    // 跳转到登录页面
+    goToLogin() {
+      common_vendor.index.navigateTo({
+        url: "/pages/login/login"
+      });
     },
     // 退出登录
     logout() {
@@ -61,7 +88,17 @@ const _sfc_main = common_vendor.defineComponent({
         content: "确定要退出登录吗？",
         success: (res) => {
           if (res.confirm) {
+            utils_auth.auth.clearLoginData();
             this.isLoggedIn = false;
+            this.userInfo = {
+              nickname: "",
+              userId: "",
+              isVip: false,
+              coins: 0,
+              rechargeOrders: 0,
+              questionRecords: 0,
+              creationRecords: 0
+            };
             common_vendor.index.showToast({
               title: "已退出登录",
               icon: "success"
@@ -143,48 +180,26 @@ const _sfc_main = common_vendor.defineComponent({
       });
     },
     contactService() {
-      common_vendor.index.openCustomerServiceChat(new UTSJSONObject({
-        extInfo: new UTSJSONObject({
-          url: "https://work.weixin.qq.com/kfid/kfc123456"
-        }),
-        corpId: "ww1234567890abcdef",
-        agentId: "1000001",
-        success: () => {
-          common_vendor.index.showToast({
-            title: "正在打开客服",
-            icon: "none"
-          });
-        },
-        fail: (err = null) => {
-          common_vendor.index.__f__("log", "at pages/profile/profile.uvue:303", "打开客服失败:", err);
-          common_vendor.index.showActionSheet({
-            itemList: ["复制客服微信号", "拨打客服电话"],
-            success: (res) => {
-              if (res.tapIndex === 0) {
-                common_vendor.index.setClipboardData({
-                  data: "guanzhi-kefu",
-                  success: () => {
-                    common_vendor.index.showToast({
-                      title: "客服微信号已复制",
-                      icon: "success"
-                    });
-                  }
-                });
-              } else if (res.tapIndex === 1) {
-                common_vendor.index.makePhoneCall({
-                  phoneNumber: "400-123-4567",
-                  success: () => {
-                    common_vendor.index.showToast({
-                      title: "正在拨打客服电话",
-                      icon: "none"
-                    });
-                  }
+      common_vendor.index.showActionSheet({
+        itemList: ["在线客服", "拨打客服电话"],
+        success: (res) => {
+          if (res.tapIndex === 0) {
+            common_vendor.index.navigateTo({
+              url: "/pages/profile/customer-service/customer-service"
+            });
+          } else if (res.tapIndex === 1) {
+            common_vendor.index.makePhoneCall({
+              phoneNumber: "400-123-4567",
+              success: () => {
+                common_vendor.index.showToast({
+                  title: "正在拨打客服电话",
+                  icon: "none"
                 });
               }
-            }
-          });
+            });
+          }
         }
-      }));
+      });
     },
     goToAccountSecurity() {
       common_vendor.index.navigateTo({
@@ -207,7 +222,7 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
   return common_vendor.e({
     a: !$data.isLoggedIn
   }, !$data.isLoggedIn ? {
-    b: common_vendor.o((...args) => $options.wechatLogin && $options.wechatLogin(...args))
+    b: common_vendor.o((...args) => $options.goToLogin && $options.goToLogin(...args))
   } : common_vendor.e({
     c: !$data.userInfo.avatar
   }, !$data.userInfo.avatar ? {

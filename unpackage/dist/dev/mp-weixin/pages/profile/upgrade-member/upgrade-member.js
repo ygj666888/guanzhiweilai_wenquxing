@@ -98,36 +98,29 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
     b: common_vendor.f($data.plans, (plan, index, i0) => {
       return common_vendor.e({
         a: common_vendor.t(plan.name),
-        b: plan.tag
-      }, plan.tag ? {
-        c: common_vendor.t(plan.tag)
-      } : {}, {
-        d: common_vendor.t(plan.price),
-        e: common_vendor.t(plan.unit),
-        f: plan.originalPrice
+        b: common_vendor.t(plan.price),
+        c: common_vendor.t(plan.unit),
+        d: plan.originalPrice
       }, plan.originalPrice ? {
-        g: common_vendor.t(plan.originalPrice)
+        e: common_vendor.t(plan.originalPrice)
       } : {}, {
-        h: common_vendor.t(plan.description),
-        i: $data.selectedPlan === index ? 1 : "",
-        j: index,
-        k: common_vendor.o(($event) => $options.selectPlan(index), index)
+        f: common_vendor.t(plan.description),
+        g: $data.selectedPlan === index ? 1 : "",
+        h: index,
+        i: common_vendor.o(($event) => $options.selectPlan(index), index)
       });
     }),
     c: common_vendor.f($data.paymentMethods, (payment, index, i0) => {
-      return common_vendor.e({
+      return {
         a: common_vendor.t(payment.icon),
         b: common_vendor.t(payment.name),
-        c: $data.selectedPayment === index
-      }, $data.selectedPayment === index ? {} : {}, {
-        d: $data.selectedPayment === index ? 1 : "",
-        e: index,
-        f: common_vendor.o(($event) => $options.selectPayment(index), index)
-      });
+        c: $data.selectedPayment === index ? 1 : "",
+        d: index,
+        e: common_vendor.o(($event) => $options.selectPayment(index), index)
+      };
     }),
     d: common_vendor.t($options.selectedPlanPrice),
-    e: common_vendor.o((...args) => $options.confirmPayment && $options.confirmPayment(...args)),
-    f: common_vendor.sei(common_vendor.gei(_ctx, ""), "view")
+    e: common_vendor.o((...args) => $options.confirmPayment && $options.confirmPayment(...args))
   };
 }
 const MiniProgramPage = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["render", _sfc_render]]);

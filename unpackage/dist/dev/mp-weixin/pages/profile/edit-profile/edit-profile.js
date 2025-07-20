@@ -22,28 +22,24 @@ const _sfc_main = common_vendor.defineComponent({
   onShow() {
     this.loadUserData();
   },
-  loadUserData() {
-    const savedUserInfo = common_vendor.index.getStorageSync("userInfo");
-    if (savedUserInfo) {
-      this.userInfo = Object.assign(Object.assign({}, this.userInfo), savedUserInfo);
-    }
-    const savedAvatar = common_vendor.index.getStorageSync("userAvatar");
-    if (savedAvatar) {
-      this.userInfo.avatar = savedAvatar;
-    }
-    const phoneBound = common_vendor.index.getStorageSync("phoneBound");
-    if (phoneBound) {
-      this.userInfo.phoneBound = true;
-      if (!this.userInfo.phoneBound) {
-        this.userInfo.phoneBound = true;
-        common_vendor.index.setStorageSync("userInfo", this.userInfo);
-      }
-    }
-    this.genderIndex = this.genderOptions.indexOf(this.userInfo.gender);
-    if (this.genderIndex === -1)
-      this.genderIndex = 0;
-  },
   methods: {
+    loadUserData() {
+      const savedUserInfo = common_vendor.index.getStorageSync("userInfo");
+      if (savedUserInfo) {
+        this.userInfo = Object.assign(Object.assign({}, this.userInfo), savedUserInfo);
+      }
+      const savedAvatar = common_vendor.index.getStorageSync("userAvatar");
+      if (savedAvatar) {
+        this.userInfo.avatar = savedAvatar;
+      }
+      const phoneBound = common_vendor.index.getStorageSync("phoneBound");
+      if (phoneBound) {
+        this.userInfo.phoneBound = true;
+      }
+      this.genderIndex = this.genderOptions.indexOf(this.userInfo.gender);
+      if (this.genderIndex === -1)
+        this.genderIndex = 0;
+    },
     chooseAvatar() {
       common_vendor.index.chooseImage(new UTSJSONObject({
         count: 1,
