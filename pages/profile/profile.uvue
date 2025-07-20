@@ -36,8 +36,8 @@
 				<!-- 会员和硬币信息 -->
 				<view class="member-section">
 					<view class="member-info">
-						<text class="member-type">{{userInfo.isVip ? 'VIP会员' : '普通用户'}}						<text class="member-promo" v-if="!userInfo.isVip">升级会员限时送硬币</text>
-					</text>
+						<text class="member-type">{{userInfo.isVip ? 'VIP会员' : '普通用户'}}</text>
+						<text class="member-promo" v-if="!userInfo.isVip">升级会员限时送硬币</text>
 					</view>
 					<button class="upgrade-btn" v-if="!userInfo.isVip" @click="goToUpgradeMember">升级会员</button>
 				</view>
