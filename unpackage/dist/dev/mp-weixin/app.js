@@ -20,6 +20,7 @@ if (!Math) {
   "./pages/creation/ppt/ppt.js";
   "./pages/creation/experience/experience.js";
   "./pages/creation/speech/speech.js";
+  "./pages/creation/more/more.js";
   "./pages/qa/history/history.js";
   "./pages/login/login.js";
   "./pages/login/phone-login.js";

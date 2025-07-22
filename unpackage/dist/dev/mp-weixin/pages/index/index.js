@@ -73,7 +73,7 @@ const _sfc_main = common_vendor.defineComponent({
       });
     },
     goToMore() {
-      common_vendor.index.navigateTo({
+      common_vendor.index.switchTab({
         url: "/pages/creation/creation"
       });
     },

@@ -18,6 +18,7 @@
     "pages/creation/ppt/ppt",
     "pages/creation/experience/experience",
     "pages/creation/speech/speech",
+    "pages/creation/more/more",
     "pages/qa/history/history",
     "pages/login/login",
     "pages/login/phone-login"

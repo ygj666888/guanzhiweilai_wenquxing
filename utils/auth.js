@@ -69,5 +69,21 @@ export default {
 			return true
 		}
 		return false
+	},
+	
+	// 设置登录数据
+	setLoginData(userInfo) {
+		const currentTime = Date.now()
+		const token = 'token_' + currentTime
+		
+		// 保存登录信息到本地存储
+		uni.setStorageSync('token', token)
+		uni.setStorageSync('userInfo', userInfo)
+		uni.setStorageSync('loginTime', currentTime)
+		
+		// 设置登录状态更新标记
+		this.setLoginStatusUpdated()
+		
+		console.log('Auth工具 - 设置登录数据成功:', userInfo)
 	}
 } 

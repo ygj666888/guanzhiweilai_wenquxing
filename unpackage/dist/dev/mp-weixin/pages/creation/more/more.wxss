@@ -1,0 +1,130 @@
+:host{display:flex;flex-direction:column}
+
+.more-container {
+	flex: 1;
+	background-color: #f8f8f8;
+}
+
+/* 顶部标题 */
+.header {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding: 30rpx;
+	border-bottom: 1rpx solid #e0e0e0;
+	background-color: #ffffff;
+}
+.page-title {
+	font-size: 36rpx;
+	font-weight: 600;
+	color: #000000;
+}
+
+/* 主要内容区域 */
+.main-content {
+	display: flex;
+	flex: 1;
+	height: calc(100vh - 120rpx);
+}
+
+/* 左侧导航菜单 */
+.sidebar {
+	width: 200rpx;
+	background-color: #ffffff;
+	border-right: 1rpx solid #e0e0e0;
+	display: flex;
+	flex-direction: column;
+}
+.menu-item {
+	padding: 30rpx 20rpx;
+	border-bottom: 1rpx solid #f0f0f0;
+	transition: all 0.3s;
+}
+.menu-item.active {
+	background-color: #e3f2fd;
+	border-left: 4rpx solid #007aff;
+}
+.menu-item:active {
+	background-color: #f0f8ff;
+}
+.menu-text {
+	font-size: 28rpx;
+	color: #333333;
+	text-align: center;
+}
+.menu-item.active .menu-text {
+	color: #007aff;
+	font-weight: 600;
+}
+
+/* 右侧内容区域 */
+.content-area {
+	flex: 1;
+	padding: 30rpx;
+	background-color: #f8f8f8;
+}
+
+/* 工具列表 */
+.tools-section {
+	margin-bottom: 40rpx;
+}
+.tools-grid {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 20rpx;
+}
+.tool-item {
+	background-color: #ffffff;
+	border-radius: 16rpx;
+	padding: 30rpx;
+	text-align: center;
+	position: relative;
+	box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.04);
+	transition: all 0.3s;
+}
+.tool-item:active {
+	transform: scale(0.98);
+	box-shadow: 0 1rpx 4rpx rgba(0, 0, 0, 0.08);
+}
+.tool-icon {
+	width: 80rpx;
+	height: 80rpx;
+	background-color: #007aff;
+	border-radius: 12rpx;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin: 0 auto 20rpx;
+}
+.icon-img {
+	width: 50rpx;
+	height: 50rpx;
+}
+.icon-text {
+	font-size: 36rpx;
+	font-weight: 600;
+	color: #ffffff;
+}
+.tool-name {
+	font-size: 28rpx;
+	font-weight: 600;
+	color: #000000;
+	display: block;
+	margin-bottom: 10rpx;
+}
+.tool-desc {
+	font-size: 24rpx;
+	color: #666666;
+	line-height: 1.4;
+	margin-bottom: 15rpx;
+}
+.tool-tag {
+	position: absolute;
+	top: 15rpx;
+	right: 15rpx;
+	background-color: #e3f2fd;
+	color: #007aff;
+	font-size: 20rpx;
+	padding: 4rpx 8rpx;
+	border-radius: 4rpx;
+}

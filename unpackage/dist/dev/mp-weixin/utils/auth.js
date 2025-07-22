@@ -59,6 +59,16 @@ const auth = {
       return true;
     }
     return false;
+  },
+  // 设置登录数据
+  setLoginData(userInfo) {
+    const currentTime = Date.now();
+    const token = "token_" + currentTime;
+    common_vendor.index.setStorageSync("token", token);
+    common_vendor.index.setStorageSync("userInfo", userInfo);
+    common_vendor.index.setStorageSync("loginTime", currentTime);
+    this.setLoginStatusUpdated();
+    common_vendor.index.__f__("log", "at utils/auth.js:87", "Auth工具 - 设置登录数据成功:", userInfo);
   }
 };
 exports.auth = auth;

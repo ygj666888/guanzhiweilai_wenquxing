@@ -32,6 +32,7 @@
           </view>
         </view>
       </view>
+
       <!-- 学术教育分组 -->
       <view class="section">
         <view class="section-header force-left">
@@ -47,6 +48,7 @@
           </view>
         </view>
       </view>
+
       <!-- 学生常用分组 -->
       <view class="section">
         <view class="section-header force-left">
@@ -62,6 +64,7 @@
           </view>
         </view>
       </view>
+
       <!-- 机关单位分组 -->
       <view class="section">
         <view class="section-header force-left">
@@ -156,73 +159,60 @@ export default {
           key: 'hot',
           title: '热门创作',
           items: [
-            { icon: '/static/word.png', tag: '长文', name: '论文助手', desc: '基于专业知识库的AI论文专家' },
-            { icon: '/static/ppt.png', tag: '长文', name: 'PPT', desc: '一键快速生成，轻松搞定PPT' },
-            { icon: '/static/note.png', tag: '长文', name: '心得体会', desc: '任何心得体会，都能上价值！' },
-            { icon: '/static/mic.png', tag: '长文', name: '演讲稿', desc: '各类用途、风格演讲稿快速生成！' },
-            { icon: '/static/report.png', tag: '长文', name: '实习总结报告', desc: '全面专业深入的实习总结/实习报告' },
-            { icon: '/static/summary.png', tag: '长文', name: '工作总结', desc: '适用于个人工作总结与回顾' },
+            { icon: '/static/word.png', tag: '长文', name: '论文助手（学术写作）', desc: '基于专业知识库的AI论文专家', bgColor: '#e3f2fd' },
+            { icon: '/static/ppt.png', tag: '长文', name: 'PPT（演示制作）', desc: '一键快速生成，轻松搞定PPT', bgColor: '#fff3e0' },
+            { icon: '/static/note.png', tag: '长文', name: '心得体会（感悟总结）', desc: '任何心得体会，都能上价值！', bgColor: '#f3e5f5' },
+            { icon: '/static/mic.png', tag: '长文', name: '演讲稿（演讲准备）', desc: '演讲稿，让你的演讲更精彩', bgColor: '#e8f5e8' },
           ]
         },
         {
           key: 'edu',
           title: '学术教育',
           items: [
-            { icon: '/static/word.png', tag: '长文', name: '开题报告', desc: '万事开头难，开题报告特别难~来，点我！' },
-            { icon: '/static/word.png', tag: '长文', name: '文献综述', desc: '文献总结评价，观点深入剖析' },
-            { icon: '/static/word.png', tag: '长文', name: '文档翻译', desc: '做最专业的文档翻译助手~' },
-            { icon: '/static/word.png', tag: '长文', name: '论文助手', desc: '基于专业知识库的AI论文专家' },
-            { icon: '/static/word.png', tag: '长文', name: '文档改写降重', desc: '文档全文一键改写，降重神器' },
-            { icon: '/static/word.png', tag: '长文', name: '答辩稿', desc: '论文答辩，我来帮你精心准备' },
-            { icon: '/static/word.png', tag: '长文', name: '去AI痕迹', desc: '文章降重+去“AI”味' },
+            { icon: '/static/word.png', tag: '长文', name: '开题报告（研究起点）', desc: '万事开头难，开题报告特别难~来，点我！' },
+            { icon: '/static/word.png', tag: '长文', name: '文献综述（研究梳理）', desc: '文献总结评价，观点深入剖析' },
+            { icon: '/static/word.png', tag: '长文', name: '论文助手（学术写作）', desc: '基于专业知识库的AI论文专家' },
+            { icon: '/static/word.png', tag: '长文', name: '文档改写降重（查重优化）', desc: '文档全文一键改写，降重神器' }
           ]
         },
         {
           key: 'student',
           title: '学生常用',
           items: [
-            { icon: '/static/report.png', tag: '长文', name: '实习总结报告', desc: '全面专业深入的实习总结/实习报告' },
-            { icon: '/static/note.png', tag: '长文', name: '心得体会', desc: '任何心得体会，都能上价值！' },
-            { icon: '/static/report.png', tag: '长文', name: '职业规划书', desc: '清晰的职业规划，是事业成功的前提' },
-            { icon: '/static/note.png', tag: '长文', name: '读后感', desc: '读后感没灵感的同学看这里！' },
-            { icon: '/static/ppt.png', tag: '长文', name: 'PPT', desc: '一键快速生成，轻松搞定PPT' },
-            { icon: '/static/word.png', tag: '长文', name: '论文助手', desc: '基于专业知识库的AI论文专家' },
+            { icon: '/static/report.png', tag: '长文', name: '实习总结报告（实习总结）', desc: '全面专业深入的实习总结/实习报告' },
+            { icon: '/static/note.png', tag: '长文', name: '心得体会（感悟总结）', desc: '任何心得体会，都能上价值！' },
+            { icon: '/static/report.png', tag: '长文', name: '职业规划书（就业准备）', desc: '清晰的职业规划，是事业成功的前提' },
+            { icon: '/static/note.png', tag: '长文', name: '读后感（学习总结）', desc: '读后感没灵感的同学看这里！' }
           ]
         },
         {
           key: 'gov',
           title: '机关单位',
           items: [
-            { icon: '/static/book.png', tag: '长文', name: '思想汇报', desc: '各类思想汇报，助力你的工作学习~' },
-            { icon: '/static/mic.png', tag: '长文', name: '发言材料', desc: '专业详实的发言材料，让你的发言掌声不停~' },
-            { icon: '/static/book.png', tag: '长文', name: '公文写作', desc: '格式规范，逻辑严谨，拟一篇公文只要几分钟' },
-            { icon: '/static/pen.png', tag: '长文', name: '征文', desc: '各类征文，高分作品，逻辑严谨' },
-            { icon: '/static/book.png', tag: '长文', name: '申请书', desc: '撰写各类申请书，信手拈来~' },
-            { icon: '/static/note.png', tag: '长文', name: '读后感', desc: '读后感没灵感的同学看这里！' },
-            { icon: '/static/ppt.png', tag: '长文', name: 'PPT', desc: '一键快速生成，轻松搞定PPT' },
-            { icon: '/static/report.png', tag: '长文', name: '个人自我剖析', desc: '对照检查，思想剖析' },
+            { icon: '/static/book.png', tag: '长文', name: '思想汇报（政治学习）', desc: '各类思想汇报，助力你的工作学习~' },
+            { icon: '/static/mic.png', tag: '长文', name: '发言材料（会议发言）', desc: '专业详实的发言材料，让你的发言掌声不停~' },
+            { icon: '/static/book.png', tag: '长文', name: '公文写作（日常工作）', desc: '格式规范，逻辑严谨，拟一篇公文只要几分钟' },
+            { icon: '/static/book.png', tag: '长文', name: '申请书（行政事务）', desc: '撰写各类申请书，信手拈来~' }
           ]
         },
         {
           key: 'media',
           title: '媒体文学',
           items: [
-            { icon: '/static/gzh.png', tag: '长文', name: '公众号文章', desc: '写有料文章，找精准粉丝，让创作不再枯竭！' },
-            { icon: '/static/note.png', tag: '长文', name: '短篇小说', desc: '短篇小说，讲述最奇妙的故事' },
-            { icon: '/static/seo.png', tag: '长文', name: 'SEO文章', desc: 'SEO神器，让你的内容营销大放异彩' },
-            { icon: '/static/mic.png', tag: '长文', name: '小品剧本', desc: '小品剧本看过来，再也不担心晚会演什么了~' },
-            { icon: '/static/gzh.png', tag: '长文', name: '朋友圈文案', desc: '想发朋友圈，不知说点啥？我来搞定！' },
-            { icon: '/static/pen.png', tag: '长文', name: '科普文章', desc: '科普内容，通俗易懂' },
+            { icon: '/static/gzh.png', tag: '长文', name: '公众号文章（新媒体）', desc: '写有料文章，找精准粉丝，让创作不再枯竭！' },
+            { icon: '/static/note.png', tag: '长文', name: '短篇小说（文学创作）', desc: '短篇小说，讲述最奇妙的故事' },
+            { icon: '/static/seo.png', tag: '长文', name: 'SEO文章（网络营销）', desc: 'SEO神器，让你的内容营销大放异彩' },
+            { icon: '/static/gzh.png', tag: '长文', name: '朋友圈文案（社交内容）', desc: '想发朋友圈，不知说点啥？我来搞定！' }
           ]
         },
         {
           key: 'business',
           title: '商业分析',
           items: [
-            { icon: '/static/analysis.png', tag: '长文', name: '市场分析', desc: '深度市场分析，助力决策' },
-            { icon: '/static/plan.png', tag: '长文', name: '商业计划书', desc: '专业商业计划书，融资路演必备' },
-            { icon: '/static/report.png', tag: '长文', name: '行业报告', desc: '权威行业报告，数据详实' },
-            { icon: '/static/summary.png', tag: '长文', name: '数据总结', desc: '数据总结，洞察趋势' },
+            { icon: '/static/analysis.png', tag: '长文', name: '市场分析（商业决策）', desc: '深度市场分析，助力决策' },
+            { icon: '/static/plan.png', tag: '长文', name: '商业计划书（创业融资）', desc: '专业商业计划书，融资路演必备' },
+            { icon: '/static/report.png', tag: '长文', name: '行业报告（行业研究）', desc: '权威行业报告，数据详实' },
+            { icon: '/static/summary.png', tag: '长文', name: '数据总结（数据分析）', desc: '数据总结，洞察趋势' }
           ]
         },
       ]
@@ -257,52 +247,46 @@ export default {
     goToCreationTool(item) {
       // 根据工具名称跳转到对应页面
       switch (item.name) {
-        case '论文助手':
+        case '论文助手（学术写作）':
           uni.navigateTo({
             url: '/pages/creation/paper-assistant/paper-assistant'
           });
           break;
-        case 'PPT':
+        case 'PPT（演示制作）':
           uni.navigateTo({
             url: '/pages/creation/ppt/ppt'
           });
           break;
-        case '心得体会':
+        case '心得体会（感悟总结）':
           uni.navigateTo({
             url: '/pages/creation/experience/experience'
           });
           break;
-        case '演讲稿':
+        case '演讲稿（演讲准备）':
           uni.navigateTo({
             url: '/pages/creation/speech/speech'
           });
           break;
-        case '实习总结报告':
-        case '工作总结':
-        case '开题报告':
-        case '文献综述':
-        case '文档翻译':
-        case '文档改写降重':
-        case '答辩稿':
-        case '去AI痕迹':
-        case '职业规划书':
-        case '读后感':
-        case '思想汇报':
-        case '发言材料':
-        case '公文写作':
-        case '征文':
-        case '申请书':
-        case '个人自我剖析':
-        case '公众号文章':
-        case '短篇小说':
-        case 'SEO文章':
-        case '小品剧本':
-        case '朋友圈文案':
-        case '科普文章':
-        case '市场分析':
-        case '商业计划书':
-        case '行业报告':
-        case '数据总结':
+        case '开题报告（研究起点）':
+        case '文献综述（研究梳理）':
+        case '论文助手（学术写作）':
+        case '文档改写降重（查重优化）':
+        case '实习总结报告（实习总结）':
+        case '心得体会（感悟总结）':
+        case '职业规划书（就业准备）':
+        case '读后感（学习总结）':
+        case '思想汇报（政治学习）':
+        case '发言材料（会议发言）':
+        case '公文写作（日常工作）':
+        case '申请书（行政事务）':
+        case '公众号文章（新媒体）':
+        case '短篇小说（文学创作）':
+        case 'SEO文章（网络营销）':
+        case '朋友圈文案（社交内容）':
+        case '市场分析（商业决策）':
+        case '商业计划书（创业融资）':
+        case '行业报告（行业研究）':
+        case '数据总结（数据分析）':
           uni.showToast({
             title: '功能开发中',
             icon: 'none'
@@ -479,6 +463,105 @@ export default {
   color: #888;
   margin-top: 6rpx;
 }
+.home-style {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24rpx 20rpx;
+}
+.home-card {
+  width: calc(50% - 10rpx);
+  background: #fff;
+  border-radius: 20rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0,0,0,0.03);
+  padding: 24rpx 20rpx 20rpx 20rpx;
+  margin-bottom: 0;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.icon-bg {
+  width: 56rpx;
+  height: 56rpx;
+  border-radius: 12rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 12rpx;
+}
+.icon-img {
+  width: 32rpx;
+  height: 32rpx;
+}
+.home-tag {
+  position: absolute;
+  top: 20rpx;
+  right: 20rpx;
+  background: #e3f2fd;
+  color: #1976ff;
+  border-radius: 12rpx;
+  font-size: 20rpx;
+  padding: 2rpx 14rpx;
+}
+.card-title {
+  font-size: 28rpx;
+  font-weight: bold;
+  color: #222;
+  margin-bottom: 8rpx;
+}
+.card-desc {
+  font-size: 22rpx;
+  color: #888;
+  line-height: 1.5;
+}
+.card-grid-fill {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24rpx 20rpx;
+}
+.simple-card {
+  width: calc(50% - 10rpx);
+  background: #fff;
+  border-radius: 16rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0,0,0,0.03);
+  padding: 20rpx 16rpx 16rpx 16rpx;
+  margin-bottom: 0;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.simple-icon {
+  width: 40rpx;
+  height: 40rpx;
+  margin-bottom: 8rpx;
+}
+.simple-tag {
+  position: absolute;
+  top: 16rpx;
+  right: 16rpx;
+  background: #f5f5f5;
+  color: #666;
+  border-radius: 8rpx;
+  font-size: 18rpx;
+  padding: 2rpx 8rpx;
+}
+.simple-name {
+  font-size: 24rpx;
+  font-weight: 500;
+  color: #222;
+  margin-top: 8rpx;
+  line-height: 1.3;
+}
+.simple-desc {
+  font-size: 20rpx;
+  color: #888;
+  margin-top: 6rpx;
+  line-height: 1.4;
+}
+.force-left {
+  text-align: left;
+}
 .tab-bar {
   position: fixed;
   left: 0;
@@ -566,59 +649,47 @@ export default {
 .card-grid-fill {
   display: flex;
   flex-wrap: wrap;
-  gap: 24rpx 24rpx;
-  padding: 0 16rpx;
-  box-sizing: border-box;
-  justify-content: flex-start;
+  gap: 24rpx 20rpx;
 }
 .simple-card {
+  width: calc(50% - 10rpx);
   background: #fff;
-  border-radius: 20rpx;
-  box-shadow: 0 2rpx 8rpx rgba(0,0,0,0.04);
-  border: none;
-  width: calc(50% - 12rpx);
-  min-width: 0;
-  min-height: 180rpx;
+  border-radius: 16rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0,0,0,0.03);
+  padding: 20rpx 16rpx 16rpx 16rpx;
   margin-bottom: 0;
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  position: relative;
-  padding: 28rpx 20rpx 20rpx 20rpx;
-  box-sizing: border-box;
-  justify-content: flex-start;
 }
 .simple-icon {
-  width: 56rpx;
-  height: 56rpx;
-  border-radius: 12rpx;
-  margin-bottom: 12rpx;
-  background: #f5f7fa;
-  display: block;
+  width: 40rpx;
+  height: 40rpx;
+  margin-bottom: 8rpx;
 }
 .simple-tag {
   position: absolute;
-  top: 18rpx;
-  right: 18rpx;
-  background: #f5f7fa;
-  color: #1976ff;
-  border-radius: 12rpx;
-  font-size: 20rpx;
-  border: none;
-  padding: 2rpx 14rpx;
-  font-weight: 500;
+  top: 16rpx;
+  right: 16rpx;
+  background: #f5f5f5;
+  color: #666;
+  border-radius: 8rpx;
+  font-size: 18rpx;
+  padding: 2rpx 8rpx;
 }
 .simple-name {
-  font-size: 28rpx;
-  font-weight: bold;
+  font-size: 24rpx;
+  font-weight: 500;
   color: #222;
-  margin-bottom: 8rpx;
+  margin-top: 8rpx;
+  line-height: 1.3;
 }
 .simple-desc {
-  font-size: 22rpx;
+  font-size: 20rpx;
   color: #888;
-  margin-top: auto;
-  line-height: 1.5;
+  margin-top: 6rpx;
+  line-height: 1.4;
 }
 .left-align {
   justify-content: flex-start !important;
@@ -628,32 +699,6 @@ export default {
   margin-left: 0;
 }
 .section-header.left-align {
-  justify-content: flex-start !important;
-}
-.section-title {
-  text-align: left;
-}
-.section-more {
-  margin-left: 16rpx;
-}
-.force-left {
-  margin-left: 0 !important;
-  padding-left: 0 !important;
-  text-align: left !important;
-  align-items: flex-start !important;
-  justify-content: flex-start !important;
-  align-self: flex-start !important;
-  left: 0 !important;
-  position: relative;
-}
-.login-btn.force-left {
-  margin-left: 0 !important;
-  left: 0 !important;
-  position: relative;
-}
-.section-header.force-left {
-  margin-left: 0 !important;
-  padding-left: 0 !important;
   justify-content: flex-start !important;
 }
 .section-title.force-left,
@@ -723,4 +768,53 @@ export default {
   margin-top: auto;
   line-height: 1.5;
 }
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12rpx;
+}
+.icon-wrapper {
+  width: 56rpx;
+  height: 56rpx;
+  border-radius: 12rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f5f7fa;
+}
+.card-icon {
+  width: 40rpx;
+  height: 40rpx;
+}
+.tag-wrapper {
+  background: #f5f7fa;
+  border-radius: 12rpx;
+  padding: 2rpx 14rpx;
+  font-size: 20rpx;
+  font-weight: 500;
+  color: #1976ff;
+}
+.card-content {
+  margin-bottom: 12rpx;
+}
+.card-name {
+  font-size: 28rpx;
+  font-weight: bold;
+  color: #222;
+  margin-bottom: 8rpx;
+}
+.card-footer {
+  display: flex;
+  justify-content: flex-end;
+}
+.card-action {
+  background: #1976ff;
+  color: #fff;
+  border-radius: 24rpx;
+  padding: 8rpx 24rpx;
+  font-size: 24rpx;
+  border: none;
+}
+
 </style> 

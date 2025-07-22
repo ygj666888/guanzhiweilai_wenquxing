@@ -17,7 +17,7 @@
 			console.log('App LastPageBackPress')
 			if (firstBackTime == 0) {
 				uni.showToast({
-					title: '再按一次退出这个应用',
+					title: '再按一次退出应用',
 					position: 'bottom',
 				})
 				firstBackTime = Date.now()

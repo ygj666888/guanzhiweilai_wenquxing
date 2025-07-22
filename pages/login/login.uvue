@@ -29,7 +29,9 @@
         </view>
       </view>
       <!-- 微信一键登录按钮 -->
-      <button class="login-btn" @click="wechatLogin">微信一键登录</button>
+      <button class="login-btn" @click.stop="wechatLogin" @tap="wechatLogin">微信一键登录</button>
+      <!-- 测试按钮 -->
+      <button class="test-btn" @click="testClick">测试点击</button>
       <!-- 手机号登录小字按钮 -->
       <text class="phone-login-link" @click="goToPhoneLogin">手机号登录</text>
       <view class="tips">未注册手机号验证后自动创建账号</view>
@@ -38,30 +40,60 @@
 </template>
 
 <script>
+import auth from '@/utils/auth.js'
+
 export default {
   methods: {
     wechatLogin() {
-      // 本地微信登录模拟
+      console.log('微信登录按钮被点击')
+      
+      // 显示加载状态
+      uni.showLoading({
+        title: '登录中...'
+      })
+      
+      // 模拟用户信息
       const mockUserInfo = {
-        nickname: '微信用户',
-        userId: 'wx_' + Date.now(),
-        isVip: false,
+        nickname: '测试用户',
+        avatar: '/static/default-avatar.png',
+        phone: '138****8888',
+        isVip: false, // 添加isVip字段
         coins: 1000,
         rechargeOrders: 0,
         questionRecords: 0,
         creationRecords: 0
       }
-      const currentTime = Date.now()
-      uni.setStorageSync('token', 'mock_token_' + currentTime)
-      uni.setStorageSync('userInfo', mockUserInfo)
-      uni.setStorageSync('loginTime', currentTime)
-      uni.showToast({ title: '登录成功', icon: 'success' })
+      
+      // 模拟网络延迟
       setTimeout(() => {
-        uni.navigateBack()
+        // 隐藏加载状态
+        uni.hideLoading()
+        
+        // 使用全局登录状态管理工具设置登录数据
+        auth.setLoginData(mockUserInfo)
+        
+        uni.showToast({ 
+          title: '登录成功', 
+          icon: 'success',
+          duration: 2000
+        })
+        
+        // 延迟返回，让用户看到成功提示
+        setTimeout(() => {
+          uni.navigateBack()
+        }, 1500)
       }, 1000)
     },
     goToPhoneLogin() {
       uni.navigateTo({ url: '/pages/login/phone-login' })
+    },
+    
+    testClick() {
+      console.log('测试按钮被点击')
+      uni.showToast({
+        title: '测试按钮正常',
+        icon: 'success'
+      })
     }
   }
 }
@@ -167,13 +199,42 @@ export default {
   justify-content: center;
   box-shadow: 0 4rpx 12rpx rgba(0, 122, 255, 0.15);
   margin-bottom: 24rpx;
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
+
+.login-btn:active {
+  transform: scale(0.98);
+  box-shadow: 0 2rpx 8rpx rgba(0, 122, 255, 0.2);
+}
+
 .phone-login-link {
   font-size: 24rpx;
   color: #007aff;
   margin-bottom: 24rpx;
   text-decoration: underline;
   cursor: pointer;
+  padding: 10rpx;
+}
+
+.phone-login-link:active {
+  opacity: 0.7;
+}
+
+.test-btn {
+  width: 100%;
+  height: 80rpx;
+  background: #ff6b6b;
+  color: #fff;
+  border: none;
+  border-radius: 12rpx;
+  font-size: 28rpx;
+  margin-bottom: 20rpx;
+  cursor: pointer;
+}
+
+.test-btn:active {
+  background: #ff5252;
 }
 .tips {
   font-size: 24rpx;
