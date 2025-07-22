@@ -1,68 +1,618 @@
 <template>
-	<view class="creation-container">
-		<!-- 顶部标题 -->
-		<view class="header">
-			<text class="page-title">创作</text>
-		</view>
-
-		<!-- 主要内容 -->
-		<scroll-view class="main-content" scroll-y="true">
-			<view class="content">
-				<text class="welcome-text">创作页面</text>
-			</view>
-		</scroll-view>
-	</view>
+  <view class="creation-page">
+    <!-- 顶部区域 -->
+    <view class="top-bar">
+      <button class="login-btn force-left">登录</button>
+      <view class="native-icons"></view>
+    </view>
+    <view class="banner simple-banner">
+      <text class="slogan"><text class="brand">冠智未来文曲星</text>，AI长文写作引擎</text>
+      <text class="stat">已成功创作 <text class="stat-num">{{ creationCount }}</text> 次</text>
+      <view class="search-bar simple-search-bar">
+        <input class="search-input simple-search-input" placeholder="搜索你想要的创作应用，如PPT..." v-model="search" />
+        <button class="search-btn simple-search-btn" @click="onSearch">搜索</button>
+      </view>
+      <text class="tip simple-tip">{{ dynamicTip }}</text>
+    </view>
+    <!-- 内容区 -->
+    <scroll-view class="main-content" scroll-y>
+      <!-- 热门创作分组 -->
+      <view class="section">
+        <view class="section-header force-left">
+          <text class="section-title force-left">热门创作</text>
+        </view>
+        <view class="card-grid home-style">
+          <view class="card home-card" v-for="item in groups[0].items" :key="item.name">
+            <view class="icon-bg" :style="{ background: item.bgColor }">
+              <image v-if="item.icon" :src="item.icon" class="icon-img" mode="aspectFit" />
+            </view>
+            <text class="tag home-tag">{{ item.tag }}</text>
+            <view class="card-title">{{ item.name }}</view>
+            <view class="card-desc">{{ item.desc }}</view>
+          </view>
+        </view>
+      </view>
+      <!-- 学术教育分组 -->
+      <view class="section">
+        <view class="section-header force-left">
+          <text class="section-title force-left">学术教育</text>
+          <text class="section-more force-left" @click="goToMore(groups[1].key)">更多</text>
+        </view>
+        <view class="card-grid card-grid-fill">
+          <view v-for="item in groups[1].items" :key="item.name" class="card simple-card">
+            <image v-if="item.icon" class="icon simple-icon" :src="item.icon" mode="aspectFit" />
+            <text class="tag simple-tag">{{ item.tag }}</text>
+            <text class="name simple-name">{{ item.name }}</text>
+            <text class="desc simple-desc">{{ item.desc }}</text>
+          </view>
+        </view>
+      </view>
+      <!-- 学生常用分组 -->
+      <view class="section">
+        <view class="section-header force-left">
+          <text class="section-title force-left">学生常用</text>
+          <text class="section-more force-left" @click="goToMore(groups[2].key)">更多</text>
+        </view>
+        <view class="card-grid card-grid-fill">
+          <view v-for="item in groups[2].items" :key="item.name" class="card simple-card">
+            <image v-if="item.icon" class="icon simple-icon" :src="item.icon" mode="aspectFit" />
+            <text class="tag simple-tag">{{ item.tag }}</text>
+            <text class="name simple-name">{{ item.name }}</text>
+            <text class="desc simple-desc">{{ item.desc }}</text>
+          </view>
+        </view>
+      </view>
+      <!-- 其他分组可继续类似处理 -->
+    </scroll-view>
+    <!-- 底部导航栏 -->
+    <view class="tab-bar">
+      <view class="tab">
+        <image src="/static/tab-home.png" class="tab-icon" />
+        <text>首页</text>
+      </view>
+      <view class="tab active">
+        <image src="/static/tab-create-active.png" class="tab-icon" />
+        <text>创作</text>
+      </view>
+      <view class="tab">
+        <image src="/static/tab-knowledge.png" class="tab-icon" />
+        <text>知识库</text>
+      </view>
+      <view class="tab">
+        <image src="/static/tab-user.png" class="tab-icon" />
+        <text>我的</text>
+      </view>
+    </view>
+  </view>
 </template>
 
 <script>
 export default {
-	data() {
-		return {
-			
-		}
-	},
-	methods: {
-		
-	}
+  data() {
+    return {
+      search: '',
+      // 动态创作次数
+      creationCount: 6951300,
+      // 动态提示
+      dynamicTip: '5秒前有用户创作了一篇论文助手',
+      tipList: [
+        '5秒前有用户创作了一篇论文助手',
+        '8秒前有用户创作了一篇PPT',
+        '10秒前有用户创作了一篇心得体会',
+        '12秒前有用户创作了一份实习总结报告',
+        '15秒前有用户创作了一篇演讲稿'
+      ],
+      tipIndex: 0,
+      countTimer: null as number | null,
+      tipTimer: null as number | null,
+      groups: [
+        {
+          key: 'hot',
+          title: '热门创作',
+          items: [
+            { icon: '/static/word.png', tag: '长文', name: '论文助手', desc: '基于专业知识库的AI论文专家' },
+            { icon: '/static/ppt.png', tag: '长文', name: 'PPT', desc: '一键快速生成，轻松搞定PPT' },
+            { icon: '/static/note.png', tag: '长文', name: '心得体会', desc: '任何心得体会，都能上价值！' },
+            { icon: '/static/mic.png', tag: '长文', name: '演讲稿', desc: '各类用途、风格演讲稿快速生成！' },
+            { icon: '/static/report.png', tag: '长文', name: '实习总结报告', desc: '全面专业深入的实习总结/实习报告' },
+            { icon: '/static/summary.png', tag: '长文', name: '工作总结', desc: '适用于个人工作总结与回顾' },
+          ]
+        },
+        {
+          key: 'edu',
+          title: '学术教育',
+          items: [
+            { icon: '/static/word.png', tag: '长文', name: '开题报告', desc: '万事开头难，开题报告特别难~来，点我！' },
+            { icon: '/static/word.png', tag: '长文', name: '文献综述', desc: '文献总结评价，观点深入剖析' },
+            { icon: '/static/word.png', tag: '长文', name: '文档翻译', desc: '做最专业的文档翻译助手~' },
+            { icon: '/static/word.png', tag: '长文', name: '论文助手', desc: '基于专业知识库的AI论文专家' },
+            { icon: '/static/word.png', tag: '长文', name: '文档改写降重', desc: '文档全文一键改写，降重神器' },
+            { icon: '/static/word.png', tag: '长文', name: '答辩稿', desc: '论文答辩，我来帮你精心准备' },
+            { icon: '/static/word.png', tag: '长文', name: '去AI痕迹', desc: '文章降重+去“AI”味' },
+          ]
+        },
+        {
+          key: 'student',
+          title: '学生常用',
+          items: [
+            { icon: '/static/report.png', tag: '长文', name: '实习总结报告', desc: '全面专业深入的实习总结/实习报告' },
+            { icon: '/static/note.png', tag: '长文', name: '心得体会', desc: '任何心得体会，都能上价值！' },
+            { icon: '/static/report.png', tag: '长文', name: '职业规划书', desc: '清晰的职业规划，是事业成功的前提' },
+            { icon: '/static/note.png', tag: '长文', name: '读后感', desc: '读后感没灵感的同学看这里！' },
+            { icon: '/static/ppt.png', tag: '长文', name: 'PPT', desc: '一键快速生成，轻松搞定PPT' },
+            { icon: '/static/word.png', tag: '长文', name: '论文助手', desc: '基于专业知识库的AI论文专家' },
+          ]
+        },
+        {
+          key: 'gov',
+          title: '机关单位',
+          items: [
+            { icon: '/static/book.png', tag: '长文', name: '思想汇报', desc: '各类思想汇报，助力你的工作学习~' },
+            { icon: '/static/mic.png', tag: '长文', name: '发言材料', desc: '专业详实的发言材料，让你的发言掌声不停~' },
+            { icon: '/static/book.png', tag: '长文', name: '公文写作', desc: '格式规范，逻辑严谨，拟一篇公文只要几分钟' },
+            { icon: '/static/pen.png', tag: '长文', name: '征文', desc: '各类征文，高分作品，逻辑严谨' },
+            { icon: '/static/book.png', tag: '长文', name: '申请书', desc: '撰写各类申请书，信手拈来~' },
+            { icon: '/static/note.png', tag: '长文', name: '读后感', desc: '读后感没灵感的同学看这里！' },
+            { icon: '/static/ppt.png', tag: '长文', name: 'PPT', desc: '一键快速生成，轻松搞定PPT' },
+            { icon: '/static/report.png', tag: '长文', name: '个人自我剖析', desc: '对照检查，思想剖析' },
+          ]
+        },
+        {
+          key: 'media',
+          title: '媒体文学',
+          items: [
+            { icon: '/static/gzh.png', tag: '长文', name: '公众号文章', desc: '写有料文章，找精准粉丝，让创作不再枯竭！' },
+            { icon: '/static/note.png', tag: '长文', name: '短篇小说', desc: '短篇小说，讲述最奇妙的故事' },
+            { icon: '/static/seo.png', tag: '长文', name: 'SEO文章', desc: 'SEO神器，让你的内容营销大放异彩' },
+            { icon: '/static/mic.png', tag: '长文', name: '小品剧本', desc: '小品剧本看过来，再也不担心晚会演什么了~' },
+            { icon: '/static/gzh.png', tag: '长文', name: '朋友圈文案', desc: '想发朋友圈，不知说点啥？我来搞定！' },
+            { icon: '/static/pen.png', tag: '长文', name: '科普文章', desc: '科普内容，通俗易懂' },
+          ]
+        },
+        {
+          key: 'business',
+          title: '商业分析',
+          items: [
+            { icon: '/static/analysis.png', tag: '长文', name: '市场分析', desc: '深度市场分析，助力决策' },
+            { icon: '/static/plan.png', tag: '长文', name: '商业计划书', desc: '专业商业计划书，融资路演必备' },
+            { icon: '/static/report.png', tag: '长文', name: '行业报告', desc: '权威行业报告，数据详实' },
+            { icon: '/static/summary.png', tag: '长文', name: '数据总结', desc: '数据总结，洞察趋势' },
+          ]
+        },
+      ]
+    }
+  },
+  computed: {
+    highlightedTip() {
+      // 匹配“8秒前”、“10秒前”等数字部分加粗黑色
+      return this.dynamicTip.replace(/(\d+)(秒前)/, '<span class="tip-num">$1</span>$2');
+    }
+  },
+  mounted() {
+    // 动态增加创作次数
+    this.countTimer = setInterval(() => {
+      this.creationCount += Math.floor(Math.random() * 3) + 1;
+    }, 2000);
+    // 动态切换提示
+    this.tipTimer = setInterval(() => {
+      this.tipIndex = (this.tipIndex + 1) % this.tipList.length;
+      this.dynamicTip = this.tipList[this.tipIndex];
+    }, 4000);
+  },
+  beforeDestroy() {
+    clearInterval(this.countTimer);
+    clearInterval(this.tipTimer);
+  },
+  methods: {
+    onSearch() {},
+    goToMore(key) {
+      uni.navigateTo({ url: `/pages/creation/more/more?group=${key}` });
+    }
+  }
 }
 </script>
 
-<style>
-.creation-container {
-	flex: 1;
-	background-color: #ffffff;
+<style scoped>
+.creation-page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: #f7fafd;
 }
-
-/* 顶部标题 */
-.header {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	padding: 30rpx;
-	border-bottom: 1rpx solid #e0e0e0;
+.top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24rpx 32rpx 0 32rpx;
+  background: #fff;
 }
-
-.page-title {
-	font-size: 36rpx;
-	font-weight: 600;
-	color: #000000;
+.login-btn {
+  background: #2dbeff;
+  color: #fff;
+  border-radius: 24rpx;
+  padding: 8rpx 32rpx;
+  font-size: 24rpx;
+  border: none;
 }
-
-/* 主要内容 */
+.app-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #222;
+}
+.native-icons {
+  width: 60rpx;
+  height: 40rpx;
+}
+.logo-title {
+  text-align: center;
+  font-size: 40rpx;
+  font-weight: bold;
+  color: #222;
+  margin: 16rpx 0 0 0;
+}
+.banner {
+  background: linear-gradient(90deg, #6fd6ff 0%, #2dbeff 100%);
+  border-radius: 0 0 32rpx 32rpx;
+  padding: 32rpx 32rpx 24rpx 32rpx;
+  color: #fff;
+  text-align: center;
+}
+.slogan {
+  font-size: 28rpx;
+  font-weight: 500;
+}
+.brand {
+  color: #fff;
+  font-weight: bold;
+}
+.stat {
+  margin: 12rpx 0 0 0;
+  font-size: 24rpx;
+}
+.stat-num {
+  font-size: 36rpx;
+  font-weight: bold;
+  background: rgba(255,255,255,0.2);
+  border-radius: 12rpx;
+  padding: 0 12rpx;
+  margin: 0 4rpx;
+}
+.search-bar {
+  display: flex;
+  margin: 20rpx 0 0 0;
+  justify-content: center;
+}
+.search-input {
+  flex: 1;
+  border: none;
+  border-radius: 24rpx;
+  padding: 16rpx 24rpx;
+  font-size: 24rpx;
+  background: #fff;
+  color: #222;
+  margin-right: 12rpx;
+}
+.search-btn {
+  background: #1976ff;
+  color: #fff;
+  border-radius: 24rpx;
+  padding: 0 32rpx;
+  font-size: 24rpx;
+  border: none;
+}
+.tip {
+  font-size: 20rpx;
+  color: #e0f7fa;
+  margin-top: 8rpx;
+}
 .main-content {
-	flex: 1;
-	padding: 30rpx;
+  flex: 1;
+  padding: 0 24rpx 120rpx 24rpx;
 }
-
-.content {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	height: 400rpx;
+.section {
+  margin-top: 40rpx;
 }
-
-.welcome-text {
-	font-size: 32rpx;
-	color: #666666;
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16rpx;
+}
+.section-title {
+  font-size: 28rpx;
+  font-weight: bold;
+  color: #222;
+}
+.section-more {
+  font-size: 22rpx;
+  color: #1976ff;
+  cursor: pointer;
+}
+.card-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24rpx 20rpx;
+}
+.card {
+  width: calc(50% - 10rpx);
+  background: #fff;
+  border-radius: 20rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0,0,0,0.03);
+  padding: 24rpx 20rpx 20rpx 20rpx;
+  margin-bottom: 0;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.icon {
+  width: 48rpx;
+  height: 48rpx;
+  margin-bottom: 8rpx;
+}
+.tag {
+  position: absolute;
+  top: 20rpx;
+  right: 20rpx;
+  background: #e3f2fd;
+  color: #1976ff;
+  border-radius: 12rpx;
+  font-size: 20rpx;
+  padding: 2rpx 14rpx;
+}
+.name {
+  font-size: 26rpx;
+  font-weight: 500;
+  color: #222;
+  margin-top: 8rpx;
+}
+.desc {
+  font-size: 22rpx;
+  color: #888;
+  margin-top: 6rpx;
+}
+.tab-bar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 100rpx;
+  background: #fff;
+  display: flex;
+  border-top-left-radius: 24rpx;
+  border-top-right-radius: 24rpx;
+  box-shadow: 0 -2rpx 8rpx rgba(0,0,0,0.04);
+  z-index: 10;
+}
+.tab {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #888;
+  font-size: 22rpx;
+}
+.tab.active {
+  color: #1976ff;
+  font-weight: bold;
+}
+.tab-icon {
+  width: 40rpx;
+  height: 40rpx;
+  margin-bottom: 4rpx;
+}
+.simple-banner {
+  background: #fff;
+  border-radius: 0;
+  color: #111;
+  box-shadow: none;
+  padding: 32rpx 32rpx 24rpx 32rpx;
+  text-align: center;
+}
+.simple-banner .slogan {
+  font-size: 28rpx;
+  font-weight: 500;
+  color: #111;
+}
+.simple-banner .brand {
+  color: #111;
+  font-weight: bold;
+}
+.simple-banner .stat {
+  margin: 12rpx 0 0 0;
+  font-size: 24rpx;
+  color: #222;
+}
+.simple-banner .stat-num {
+  font-size: 36rpx;
+  font-weight: bold;
+  background: none;
+  color: #111;
+  border-radius: 0;
+  padding: 0 8rpx;
+  margin: 0 4rpx;
+}
+.simple-search-bar {
+  margin: 20rpx 0 0 0;
+  justify-content: center;
+  background: none;
+  box-shadow: none;
+}
+.simple-search-input {
+  background: #fff;
+  color: #111;
+  border: 1rpx solid #ddd;
+  border-radius: 24rpx;
+}
+.simple-search-btn {
+  background: #111;
+  color: #fff;
+  border-radius: 24rpx;
+}
+.simple-tip {
+  font-size: 20rpx;
+  color: #888;
+  margin-top: 8rpx;
+}
+.card-grid-fill {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24rpx 24rpx;
+  padding: 0 16rpx;
+  box-sizing: border-box;
+  justify-content: flex-start;
+}
+.simple-card {
+  background: #fff;
+  border-radius: 20rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0,0,0,0.04);
+  border: none;
+  width: calc(50% - 12rpx);
+  min-width: 0;
+  min-height: 180rpx;
+  margin-bottom: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  position: relative;
+  padding: 28rpx 20rpx 20rpx 20rpx;
+  box-sizing: border-box;
+  justify-content: flex-start;
+}
+.simple-icon {
+  width: 56rpx;
+  height: 56rpx;
+  border-radius: 12rpx;
+  margin-bottom: 12rpx;
+  background: #f5f7fa;
+  display: block;
+}
+.simple-tag {
+  position: absolute;
+  top: 18rpx;
+  right: 18rpx;
+  background: #f5f7fa;
+  color: #1976ff;
+  border-radius: 12rpx;
+  font-size: 20rpx;
+  border: none;
+  padding: 2rpx 14rpx;
+  font-weight: 500;
+}
+.simple-name {
+  font-size: 28rpx;
+  font-weight: bold;
+  color: #222;
+  margin-bottom: 8rpx;
+}
+.simple-desc {
+  font-size: 22rpx;
+  color: #888;
+  margin-top: auto;
+  line-height: 1.5;
+}
+.left-align {
+  justify-content: flex-start !important;
+  text-align: left !important;
+}
+.login-btn.left-align {
+  margin-left: 0;
+}
+.section-header.left-align {
+  justify-content: flex-start !important;
+}
+.section-title {
+  text-align: left;
+}
+.section-more {
+  margin-left: 16rpx;
+}
+.force-left {
+  margin-left: 0 !important;
+  padding-left: 0 !important;
+  text-align: left !important;
+  align-items: flex-start !important;
+  justify-content: flex-start !important;
+  align-self: flex-start !important;
+  left: 0 !important;
+  position: relative;
+}
+.login-btn.force-left {
+  margin-left: 0 !important;
+  left: 0 !important;
+  position: relative;
+}
+.section-header.force-left {
+  margin-left: 0 !important;
+  padding-left: 0 !important;
+  justify-content: flex-start !important;
+}
+.section-title.force-left,
+.section-more.force-left {
+  margin-left: 0 !important;
+  padding-left: 0 !important;
+  text-align: left !important;
+  align-self: flex-start !important;
+  left: 0 !important;
+  position: relative;
+}
+.card-grid.home-style {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24rpx;
+  padding: 0 16rpx;
+  box-sizing: border-box;
+}
+.home-card {
+  width: calc(50% - 12rpx);
+  min-height: 180rpx;
+  background: #fff;
+  border-radius: 20rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0,0,0,0.04);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  position: relative;
+  padding: 28rpx 20rpx 20rpx 20rpx;
+  box-sizing: border-box;
+  margin-bottom: 0;
+}
+.icon-bg {
+  width: 56rpx;
+  height: 56rpx;
+  border-radius: 12rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 12rpx;
+}
+.icon-img {
+  width: 40rpx;
+  height: 40rpx;
+}
+.home-tag {
+  position: absolute;
+  top: 18rpx;
+  right: 18rpx;
+  background: #f5f7fa;
+  color: #1976ff;
+  border-radius: 12rpx;
+  font-size: 20rpx;
+  border: none;
+  padding: 2rpx 14rpx;
+  font-weight: 500;
+}
+.card-title {
+  font-size: 28rpx;
+  font-weight: bold;
+  color: #222;
+  margin-bottom: 8rpx;
+}
+.card-desc {
+  font-size: 22rpx;
+  color: #888;
+  margin-top: auto;
+  line-height: 1.5;
 }
 </style> 

@@ -11,9 +11,7 @@
 		{
 			"path": "pages/creation/creation",
 			"style": {
-				"navigationBarTitleText": "创作中心",
-				"navigationBarBackgroundColor": "#ffffff",
-				"navigationBarTextStyle": "black"
+				"navigationBarTitleText": "创作中心"
 			}
 		},
 		{
