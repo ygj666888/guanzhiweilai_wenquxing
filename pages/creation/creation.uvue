@@ -22,7 +22,7 @@
           <text class="section-title force-left">热门创作</text>
         </view>
         <view class="card-grid home-style">
-          <view class="card home-card" v-for="item in groups[0].items" :key="item.name">
+          <view class="card home-card" v-for="item in groups[0].items" :key="item.name" @click="goToCreationTool(item)">
             <view class="icon-bg" :style="{ background: item.bgColor }">
               <image v-if="item.icon" :src="item.icon" class="icon-img" mode="aspectFit" />
             </view>
@@ -39,7 +39,7 @@
           <text class="section-more force-left" @click="goToMore(groups[1].key)">更多</text>
         </view>
         <view class="card-grid card-grid-fill">
-          <view v-for="item in groups[1].items" :key="item.name" class="card simple-card">
+          <view v-for="item in groups[1].items" :key="item.name" class="card simple-card" @click="goToCreationTool(item)">
             <image v-if="item.icon" class="icon simple-icon" :src="item.icon" mode="aspectFit" />
             <text class="tag simple-tag">{{ item.tag }}</text>
             <text class="name simple-name">{{ item.name }}</text>
@@ -54,7 +54,7 @@
           <text class="section-more force-left" @click="goToMore(groups[2].key)">更多</text>
         </view>
         <view class="card-grid card-grid-fill">
-          <view v-for="item in groups[2].items" :key="item.name" class="card simple-card">
+          <view v-for="item in groups[2].items" :key="item.name" class="card simple-card" @click="goToCreationTool(item)">
             <image v-if="item.icon" class="icon simple-icon" :src="item.icon" mode="aspectFit" />
             <text class="tag simple-tag">{{ item.tag }}</text>
             <text class="name simple-name">{{ item.name }}</text>
@@ -62,7 +62,53 @@
           </view>
         </view>
       </view>
-      <!-- 其他分组可继续类似处理 -->
+      <!-- 机关单位分组 -->
+      <view class="section">
+        <view class="section-header force-left">
+          <text class="section-title force-left">机关单位</text>
+          <text class="section-more force-left" @click="goToMore(groups[3].key)">更多</text>
+        </view>
+        <view class="card-grid card-grid-fill">
+          <view v-for="item in groups[3].items" :key="item.name" class="card simple-card" @click="goToCreationTool(item)">
+            <image v-if="item.icon" class="icon simple-icon" :src="item.icon" mode="aspectFit" />
+            <text class="tag simple-tag">{{ item.tag }}</text>
+            <text class="name simple-name">{{ item.name }}</text>
+            <text class="desc simple-desc">{{ item.desc }}</text>
+          </view>
+        </view>
+      </view>
+      
+      <!-- 媒体文学分组 -->
+      <view class="section">
+        <view class="section-header force-left">
+          <text class="section-title force-left">媒体文学</text>
+          <text class="section-more force-left" @click="goToMore(groups[4].key)">更多</text>
+        </view>
+        <view class="card-grid card-grid-fill">
+          <view v-for="item in groups[4].items" :key="item.name" class="card simple-card" @click="goToCreationTool(item)">
+            <image v-if="item.icon" class="icon simple-icon" :src="item.icon" mode="aspectFit" />
+            <text class="tag simple-tag">{{ item.tag }}</text>
+            <text class="name simple-name">{{ item.name }}</text>
+            <text class="desc simple-desc">{{ item.desc }}</text>
+          </view>
+        </view>
+      </view>
+      
+      <!-- 商业分析分组 -->
+      <view class="section">
+        <view class="section-header force-left">
+          <text class="section-title force-left">商业分析</text>
+          <text class="section-more force-left" @click="goToMore(groups[5].key)">更多</text>
+        </view>
+        <view class="card-grid card-grid-fill">
+          <view v-for="item in groups[5].items" :key="item.name" class="card simple-card" @click="goToCreationTool(item)">
+            <image v-if="item.icon" class="icon simple-icon" :src="item.icon" mode="aspectFit" />
+            <text class="tag simple-tag">{{ item.tag }}</text>
+            <text class="name simple-name">{{ item.name }}</text>
+            <text class="desc simple-desc">{{ item.desc }}</text>
+          </view>
+        </view>
+      </view>
     </scroll-view>
     <!-- 底部导航栏 -->
     <view class="tab-bar">
@@ -207,6 +253,68 @@ export default {
     onSearch() {},
     goToMore(key) {
       uni.navigateTo({ url: `/pages/creation/more/more?group=${key}` });
+    },
+    goToCreationTool(item) {
+      // 根据工具名称跳转到对应页面
+      switch (item.name) {
+        case '论文助手':
+          uni.navigateTo({
+            url: '/pages/creation/paper-assistant/paper-assistant'
+          });
+          break;
+        case 'PPT':
+          uni.navigateTo({
+            url: '/pages/creation/ppt/ppt'
+          });
+          break;
+        case '心得体会':
+          uni.navigateTo({
+            url: '/pages/creation/experience/experience'
+          });
+          break;
+        case '演讲稿':
+          uni.navigateTo({
+            url: '/pages/creation/speech/speech'
+          });
+          break;
+        case '实习总结报告':
+        case '工作总结':
+        case '开题报告':
+        case '文献综述':
+        case '文档翻译':
+        case '文档改写降重':
+        case '答辩稿':
+        case '去AI痕迹':
+        case '职业规划书':
+        case '读后感':
+        case '思想汇报':
+        case '发言材料':
+        case '公文写作':
+        case '征文':
+        case '申请书':
+        case '个人自我剖析':
+        case '公众号文章':
+        case '短篇小说':
+        case 'SEO文章':
+        case '小品剧本':
+        case '朋友圈文案':
+        case '科普文章':
+        case '市场分析':
+        case '商业计划书':
+        case '行业报告':
+        case '数据总结':
+          uni.showToast({
+            title: '功能开发中',
+            icon: 'none'
+          });
+          break;
+        default:
+          uni.showToast({
+            title: '功能开发中',
+            icon: 'none'
+          });
+          break;
+      }
     }
   }
 }
