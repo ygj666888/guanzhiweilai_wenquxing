@@ -1,0 +1,485 @@
+<template>
+	<view class="more-container">
+		<!-- 顶部标题 -->
+		<view class="header">
+			<text class="page-title">{{groupTitle}}</text>
+		</view>
+
+		<!-- 主要内容 -->
+		<scroll-view class="main-content" scroll-y="true">
+			<!-- 工具列表 -->
+			<view class="tools-section">
+				<view class="tools-grid">
+					<view 
+						class="tool-item" 
+						v-for="(tool, index) in toolsList" 
+						:key="index"
+						@click="selectTool(tool)"
+					>
+						<view class="tool-icon">
+							<image v-if="tool.icon" :src="tool.icon" class="icon-img" mode="aspectFit" />
+							<text v-else class="icon-text">{{tool.name.charAt(0)}}</text>
+						</view>
+						<text class="tool-name">{{tool.name}}</text>
+						<text class="tool-desc">{{tool.desc}}</text>
+						<view class="tool-tag">{{tool.tag}}</view>
+					</view>
+				</view>
+			</view>
+
+			<!-- 上传区域 -->
+			<view class="upload-section">
+				<text class="section-title">上传文档</text>
+				<text class="section-desc">上传您的文档，AI将为您提供更精准的创作建议</text>
+				
+				<view class="upload-area" @click="chooseFile">
+					<view class="upload-icon">📄</view>
+					<text class="upload-text">点击上传文档</text>
+					<text class="upload-tip">支持 Word、PDF、TXT 格式</text>
+				</view>
+
+				<!-- 已上传文件列表 -->
+				<view class="file-list" v-if="uploadedFiles.length > 0">
+					<view class="file-item" v-for="(file, index) in uploadedFiles" :key="index">
+						<view class="file-info">
+							<text class="file-name">{{file.name}}</text>
+							<text class="file-size">{{file.size}}</text>
+						</view>
+						<view class="file-actions">
+							<text class="action-btn" @click="previewFile(file)">预览</text>
+							<text class="action-btn delete" @click="deleteFile(index)">删除</text>
+						</view>
+					</view>
+				</view>
+			</view>
+
+			<!-- 快速操作 -->
+			<view class="quick-actions">
+				<text class="section-title">快速操作</text>
+				<view class="action-buttons">
+					<button class="action-btn" @click="startCreation">开始创作</button>
+					<button class="action-btn secondary" @click="saveTemplate">保存模板</button>
+					<button class="action-btn secondary" @click="shareTools">分享工具</button>
+				</view>
+			</view>
+		</scroll-view>
+	</view>
+</template>
+
+<script>
+export default {
+	data() {
+		return {
+			groupKey: '',
+			groupTitle: '',
+			uploadedFiles: [],
+			toolsList: []
+		}
+	},
+	onLoad(options) {
+		if (options.group) {
+			this.groupKey = options.group
+			this.loadGroupData()
+		}
+	},
+	methods: {
+		loadGroupData() {
+			// 根据分组key加载对应的工具列表
+			const groupData = {
+				'hot': {
+					title: '热门创作',
+					tools: [
+						{ icon: '/static/word.png', tag: '长文', name: '论文助手', desc: '基于专业知识库的AI论文专家' },
+						{ icon: '/static/word.png', tag: '长文', name: '论文选题', desc: '智能推荐论文选题，助你快速确定研究方向' },
+						{ icon: '/static/ppt.png', tag: '长文', name: 'PPT', desc: '一键快速生成，轻松搞定PPT' },
+						{ icon: '/static/word.png', tag: '长文', name: '论文答辩', desc: '论文答辩，我来帮你精心准备' }
+					]
+				},
+				'edu': {
+					title: '学术教育',
+					tools: [
+						{ icon: '/static/word.png', tag: '长文', name: '开题报告', desc: '万事开头难，开题报告特别难~来，点我！' },
+						{ icon: '/static/word.png', tag: '长文', name: '文献综述', desc: '文献总结评价，观点深入剖析' },
+						{ icon: '/static/word.png', tag: '长文', name: '文档翻译', desc: '做最专业的文档翻译助手~' },
+						{ icon: '/static/word.png', tag: '长文', name: '论文助手', desc: '基于专业知识库的AI论文专家' },
+						{ icon: '/static/word.png', tag: '长文', name: '文档改写降重', desc: '文档全文一键改写，降重神器' },
+						{ icon: '/static/word.png', tag: '长文', name: '答辩稿', desc: '论文答辩，我来帮你精心准备' },
+						{ icon: '/static/word.png', tag: '长文', name: '去AI痕迹', desc: '文章降重+去"AI"味' }
+					]
+				},
+				'student': {
+					title: '学生常用',
+					tools: [
+						{ icon: '/static/report.png', tag: '长文', name: '实习总结报告', desc: '全面专业深入的实习总结/实习报告' },
+						{ icon: '/static/note.png', tag: '长文', name: '心得体会', desc: '任何心得体会，都能上价值！' },
+						{ icon: '/static/report.png', tag: '长文', name: '职业规划书', desc: '清晰的职业规划，是事业成功的前提' },
+						{ icon: '/static/note.png', tag: '长文', name: '读后感', desc: '读后感没灵感的同学看这里！' },
+						{ icon: '/static/ppt.png', tag: '长文', name: 'PPT', desc: '一键快速生成，轻松搞定PPT' },
+						{ icon: '/static/word.png', tag: '长文', name: '论文助手', desc: '基于专业知识库的AI论文专家' }
+					]
+				},
+				'gov': {
+					title: '机关单位',
+					tools: [
+						{ icon: '/static/book.png', tag: '长文', name: '思想汇报', desc: '各类思想汇报，助力你的工作学习~' },
+						{ icon: '/static/mic.png', tag: '长文', name: '发言材料', desc: '专业详实的发言材料，让你的发言掌声不停~' },
+						{ icon: '/static/book.png', tag: '长文', name: '公文写作', desc: '格式规范，逻辑严谨，拟一篇公文只要几分钟' },
+						{ icon: '/static/pen.png', tag: '长文', name: '征文', desc: '各类征文，高分作品，逻辑严谨' },
+						{ icon: '/static/book.png', tag: '长文', name: '申请书', desc: '撰写各类申请书，信手拈来~' },
+						{ icon: '/static/note.png', tag: '长文', name: '读后感', desc: '读后感没灵感的同学看这里！' },
+						{ icon: '/static/ppt.png', tag: '长文', name: 'PPT', desc: '一键快速生成，轻松搞定PPT' },
+						{ icon: '/static/report.png', tag: '长文', name: '个人自我剖析', desc: '对照检查，思想剖析' }
+					]
+				},
+				'media': {
+					title: '媒体文学',
+					tools: [
+						{ icon: '/static/gzh.png', tag: '长文', name: '公众号文章', desc: '写有料文章，找精准粉丝，让创作不再枯竭！' },
+						{ icon: '/static/note.png', tag: '长文', name: '短篇小说', desc: '短篇小说，讲述最奇妙的故事' },
+						{ icon: '/static/seo.png', tag: '长文', name: 'SEO文章', desc: 'SEO神器，让你的内容营销大放异彩' },
+						{ icon: '/static/mic.png', tag: '长文', name: '小品剧本', desc: '小品剧本看过来，再也不担心晚会演什么了~' },
+						{ icon: '/static/gzh.png', tag: '长文', name: '朋友圈文案', desc: '想发朋友圈，不知说点啥？我来搞定！' },
+						{ icon: '/static/pen.png', tag: '长文', name: '科普文章', desc: '科普内容，通俗易懂' }
+					]
+				},
+				'business': {
+					title: '商业分析',
+					tools: [
+						{ icon: '/static/analysis.png', tag: '长文', name: '市场分析', desc: '深度市场分析，助力决策' },
+						{ icon: '/static/plan.png', tag: '长文', name: '商业计划书', desc: '专业商业计划书，融资路演必备' },
+						{ icon: '/static/report.png', tag: '长文', name: '行业报告', desc: '权威行业报告，数据详实' },
+						{ icon: '/static/summary.png', tag: '长文', name: '数据总结', desc: '数据总结，洞察趋势' }
+					]
+				}
+			}
+
+			const group = groupData[this.groupKey]
+			if (group) {
+				this.groupTitle = group.title
+				this.toolsList = group.tools
+			}
+		},
+
+		selectTool(tool) {
+			uni.showToast({
+				title: `选择了${tool.name}`,
+				icon: 'success'
+			})
+		},
+
+		chooseFile() {
+			uni.chooseFile({
+				count: 1,
+				type: 'file',
+				extension: ['.doc', '.docx', '.pdf', '.txt'],
+				success: (res) => {
+					const file = res.tempFiles[0]
+					this.uploadedFiles.push({
+						name: file.name,
+						size: this.formatFileSize(file.size),
+						path: file.path
+					})
+					uni.showToast({
+						title: '文件上传成功',
+						icon: 'success'
+					})
+				},
+				fail: (err) => {
+					uni.showToast({
+						title: '文件选择失败',
+						icon: 'none'
+					})
+				}
+			})
+		},
+
+		formatFileSize(size) {
+			if (size < 1024) {
+				return size + 'B'
+			} else if (size < 1024 * 1024) {
+				return (size / 1024).toFixed(1) + 'KB'
+			} else {
+				return (size / (1024 * 1024)).toFixed(1) + 'MB'
+			}
+		},
+
+		previewFile(file) {
+			uni.showToast({
+				title: '文件预览功能开发中',
+				icon: 'none'
+			})
+		},
+
+		deleteFile(index) {
+			uni.showModal({
+				title: '确认删除',
+				content: '确定要删除这个文件吗？',
+				success: (res) => {
+					if (res.confirm) {
+						this.uploadedFiles.splice(index, 1)
+						uni.showToast({
+							title: '文件已删除',
+							icon: 'success'
+						})
+					}
+				}
+			})
+		},
+
+		startCreation() {
+			uni.showToast({
+				title: '开始创作功能开发中',
+				icon: 'none'
+			})
+		},
+
+		saveTemplate() {
+			uni.showToast({
+				title: '保存模板功能开发中',
+				icon: 'none'
+			})
+		},
+
+		shareTools() {
+			uni.showToast({
+				title: '分享工具功能开发中',
+				icon: 'none'
+			})
+		}
+	}
+}
+</script>
+
+<style>
+.more-container {
+	flex: 1;
+	background-color: #f8f8f8;
+}
+
+/* 顶部标题 */
+.header {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding: 30rpx;
+	border-bottom: 1rpx solid #e0e0e0;
+	background-color: #ffffff;
+}
+
+.page-title {
+	font-size: 36rpx;
+	font-weight: 600;
+	color: #000000;
+}
+
+/* 主要内容 */
+.main-content {
+	flex: 1;
+	padding: 30rpx;
+}
+
+/* 工具列表 */
+.tools-section {
+	margin-bottom: 40rpx;
+}
+
+.tools-grid {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 20rpx;
+}
+
+.tool-item {
+	background-color: #ffffff;
+	border-radius: 16rpx;
+	padding: 30rpx;
+	text-align: center;
+	position: relative;
+	box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.04);
+}
+
+.tool-icon {
+	width: 80rpx;
+	height: 80rpx;
+	background-color: #007aff;
+	border-radius: 12rpx;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin: 0 auto 20rpx;
+}
+
+.icon-img {
+	width: 50rpx;
+	height: 50rpx;
+}
+
+.icon-text {
+	font-size: 36rpx;
+	font-weight: 600;
+	color: #ffffff;
+}
+
+.tool-name {
+	font-size: 28rpx;
+	font-weight: 600;
+	color: #000000;
+	display: block;
+	margin-bottom: 10rpx;
+}
+
+.tool-desc {
+	font-size: 24rpx;
+	color: #666666;
+	line-height: 1.4;
+	margin-bottom: 15rpx;
+}
+
+.tool-tag {
+	position: absolute;
+	top: 15rpx;
+	right: 15rpx;
+	background-color: #e3f2fd;
+	color: #007aff;
+	font-size: 20rpx;
+	padding: 4rpx 8rpx;
+	border-radius: 4rpx;
+}
+
+/* 上传区域 */
+.upload-section {
+	background-color: #ffffff;
+	border-radius: 16rpx;
+	padding: 40rpx;
+	margin-bottom: 40rpx;
+}
+
+.section-title {
+	font-size: 32rpx;
+	font-weight: 600;
+	color: #000000;
+	margin-bottom: 15rpx;
+	display: block;
+}
+
+.section-desc {
+	font-size: 26rpx;
+	color: #666666;
+	margin-bottom: 30rpx;
+	display: block;
+}
+
+.upload-area {
+	border: 2rpx dashed #e0e0e0;
+	border-radius: 12rpx;
+	padding: 60rpx 30rpx;
+	text-align: center;
+	margin-bottom: 30rpx;
+	transition: all 0.3s;
+}
+
+.upload-area:active {
+	border-color: #007aff;
+	background-color: #f0f8ff;
+}
+
+.upload-icon {
+	font-size: 80rpx;
+	margin-bottom: 20rpx;
+}
+
+.upload-text {
+	font-size: 28rpx;
+	color: #000000;
+	display: block;
+	margin-bottom: 10rpx;
+}
+
+.upload-tip {
+	font-size: 24rpx;
+	color: #999999;
+}
+
+/* 文件列表 */
+.file-list {
+	display: flex;
+	flex-direction: column;
+	gap: 15rpx;
+}
+
+.file-item {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 20rpx;
+	border: 1rpx solid #f0f0f0;
+	border-radius: 8rpx;
+	background-color: #f8f8f8;
+}
+
+.file-info {
+	display: flex;
+	flex-direction: column;
+	gap: 5rpx;
+}
+
+.file-name {
+	font-size: 26rpx;
+	color: #000000;
+}
+
+.file-size {
+	font-size: 22rpx;
+	color: #666666;
+}
+
+.file-actions {
+	display: flex;
+	gap: 15rpx;
+}
+
+.action-btn {
+	font-size: 24rpx;
+	color: #007aff;
+	padding: 8rpx 16rpx;
+	border-radius: 6rpx;
+	background-color: #f0f8ff;
+}
+
+.action-btn.delete {
+	color: #ff3b30;
+	background-color: #fff0f0;
+}
+
+/* 快速操作 */
+.quick-actions {
+	background-color: #ffffff;
+	border-radius: 16rpx;
+	padding: 40rpx;
+}
+
+.action-buttons {
+	display: flex;
+	gap: 20rpx;
+}
+
+.action-btn {
+	flex: 1;
+	height: 80rpx;
+	background: linear-gradient(90deg, #007aff 0%, #00c851 100%);
+	color: #ffffff;
+	border: none;
+	border-radius: 12rpx;
+	font-size: 28rpx;
+	font-weight: 500;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.action-btn.secondary {
+	background: #ffffff;
+	color: #007aff;
+	border: 2rpx solid #007aff;
+}
+</style> 

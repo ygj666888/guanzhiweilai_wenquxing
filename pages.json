@@ -143,6 +143,14 @@
 			}
 		},
 		{
+			"path": "pages/creation/more/more",
+			"style": {
+				"navigationBarTitleText": "更多工具",
+				"navigationBarBackgroundColor": "#ffffff",
+				"navigationBarTextStyle": "black"
+			}
+		},
+		{
 			"path": "pages/qa/history/history",
 			"style": {
 				"navigationBarTitleText": "提问记录",
